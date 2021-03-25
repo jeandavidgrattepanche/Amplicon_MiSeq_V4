@@ -12,14 +12,14 @@ from Bio import SeqIO
 from sys import argv
 
 vsearch_path = spawn.find_executable("vsearch")
-SAR_db = "SSU_Euk_PR2plus_V16_d.fasta" ##change to the correct database
+SSU_db = "db_v4/pr2_version_4.13.0_18S_UTAX.fasta" ##change to the correct database
 blastdict = {}
 
 def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 	print("start BLAST SSU_Euk_PR2plus_V16_d")
 	outputpath = NGSfile.split('chimeras')[0]
 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
-	ublast_self = vsearch_path + ' --usearch_global '+NGSfile+' --db '+SAR_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
+	ublast_self = vsearch_path + ' --usearch_global '+NGSfile+' --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
 	os.system(ublast_self)
 	for blast_record in open(outputpath+'/VsearchBLAST.tsv','r'):
@@ -28,7 +28,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 		else:
 			print(blast_record, "duplicated")
 	outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta','w+')
-	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch.fasta','w+')
+	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch.fasta','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
 		try:
 			blastdict[seq.id]
@@ -44,10 +44,10 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				outseq.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
 				outseq.close()
 
-			if ID.split('_')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (if Euk_SAR and you want SAR):
+			if ID.split('_')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
 				if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
-					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch.fasta','a')
+					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch.fasta','a')
 					outseqSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
 					outseqSAR.close()
 # 				else:
