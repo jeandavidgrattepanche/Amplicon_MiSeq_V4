@@ -28,7 +28,7 @@ def countread(readmap, readtokeep, samplelist):
 	for read in open(readtokeep,'r'):
 #		readsk.append(read.split('\n')[0])
 		g += 1
-		print(g,'(',round((g/tot)*100,2),"%) and added =>", len(OTUlist) ,end = '\r')
+		print(g,'(',round((g/tot)*100,2),"%) and added =>", len(OTUlist) ,'(',round((len(OTUlist)/tot)*100,2),"%) ", end = '\r')
 		OTUIDs = read.split(';')[0]
 		readname =read.split(';')[1].split('\n')[0]
 		readtokeepdict.setdefault(OTUIDs,[])
