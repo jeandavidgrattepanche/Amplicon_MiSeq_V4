@@ -22,7 +22,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 	ublast_self = vsearch_path + ' --thread 32 --usearch_global '+NGSfile+' --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST_4.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
 	os.system(ublast_self)
-	print('Vsearch with ', SSU_db, ' and ', NGSfile, " done. \n Creating a dictionnary, It takes awhile !")
+	print('Vsearch with ', SSU_db, ' and ', NGSfile, " done. \n Creating a dictionnary ... it takes a while!!")
 	outblast.close()
 	qb =0
 	tot = sum(0.5 for line in open(NGSfile,'r'))
@@ -34,6 +34,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 		blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
 #		else:
 #			print(blast_record, "duplicated")
+	print("Dictionary done! Merging sequence and taxonomic data... it takes a while too !")
 	outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_cdb.fasta','w+')
 	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_cdb.fasta','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
@@ -53,22 +54,10 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 
 			if ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
 				if int(seq.description.split('=')[1].replace('r','')) > (int(readcutoff)-1):
-					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
+					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov, end = '\r' )
 					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_cdb.fasta','a')
 					outseqSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
 					outseqSAR.close()
-# 				else:
-# 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT low read ", int(seq.description.split('_')[1].replace('r','')))
-# 					outseqSARl = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch_lread.fasta','a')
-# 					outseqSARl.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# 					outseqSARl.close()
-# 			else:
-# 				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT not ", Taxa)
-# 				outseqnSAR = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch_notSAR.fasta','a')
-# 				outseqnSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# 				outseqnSAR.close()
-				
-
 		except:
 			print("NO BLAST for ",seq.id, end = '\r')
 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_cdb.fasta','a')
@@ -78,6 +67,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				outseq.close()
 			outblast.write(seq.description+'\tNO_BLAST\t\t\t\t\t\t\t\t\t\t\n')
 			outblast.close()
+	print("CONGRATULATION the taxonomic assignment is done!")
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa, readcutoff)
