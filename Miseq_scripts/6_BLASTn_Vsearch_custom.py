@@ -26,14 +26,14 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 	outblast.close()
 	qb =0
 	tot = sum(0.5 for line in open(NGSfile,'r'))
-	os.system('cat '+outblast+' | sort | ')
-	for blast_record in open(outputpath+'/VsearchBLAST_4.tsv','r'):
+	os.system("awk '!seen[$1]++' "+outputpath+'/VsearchBLAST_4.tsv > '+outputpath+'/VsearchBLAST_4sorted.tsv')
+	for blast_record in open(outputpath+'/VsearchBLAST_4sorted.tsv','r'):
 		print(int(qb), '(', round((int(qb)/tot)*100,2), '%)', end = '\r')
-		if blast_record.split('\t')[0] not in blastdict.values():
-			qb += 1
-			blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
-		else:
-			print(blast_record, "duplicated")
+#		if blast_record.split('\t')[0] not in blastdict.values():
+		qb += 1
+		blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
+#		else:
+#			print(blast_record, "duplicated")
 	outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_cdb.fasta','w+')
 	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_cdb.fasta','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
@@ -72,11 +72,11 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 		except:
 			print("NO BLAST for ",seq.id)
 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_cdb.fasta','a')
-			outblast = open(outputpath+'/VsearchBLAST_4.tsv','a')
+			outblast = open(outputpath+'/VsearchBLAST_4sorted.tsv','a')
 			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
 				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
 				outseq.close()
-			outblast.write(seq.description+'\tNO_BLAST\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n')
+			outblast.write(seq.description+'\tNO_BLAST\t\t\t\t\t\t\t\t\t\t\n')
 			outblast.close()
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
