@@ -52,7 +52,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				outseq.close()
 
 			if ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
-				if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
+				if int(seq.description.split('=')[1].replace('r','')) > (int(readcutoff)-1):
 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
 					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_cdb.fasta','a')
 					outseqSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
@@ -70,10 +70,10 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				
 
 		except:
-			print("NO BLAST for ",seq.id)
+			print("NO BLAST for ",seq.id, end = '\r')
 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_cdb.fasta','a')
 			outblast = open(outputpath+'/VsearchBLAST_4sorted.tsv','a')
-			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
+			if int(seq.description.split('=')[1].replace('r','')) > (int(readcutoff)-1):
 				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
 				outseq.close()
 			outblast.write(seq.description+'\tNO_BLAST\t\t\t\t\t\t\t\t\t\t\n')
