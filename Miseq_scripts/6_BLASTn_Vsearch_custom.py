@@ -52,7 +52,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				outseq.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
 				outseq.close()
 
-			if ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
+			if ID.split('_')[1] == Taxa: # or  ID.split('p:')[1].split(',')[0] == str(Taxa): if PR2
 				if int(seq.description.split('=')[1].replace('r','')) > (int(readcutoff)-1):
 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov, end = '\r' )
 					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_cdb.fasta','a')
