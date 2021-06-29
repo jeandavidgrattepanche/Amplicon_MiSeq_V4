@@ -28,19 +28,19 @@ def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff):
 		os.makedirs(outputpath + 'OTUs/') 	
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
-# 	os.system('vsearch --derep_fulllength ' + Qlenpath + '/readpooled.fas --sizein --sizeout --strand both --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqfile.fas --uc ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt')
-# #  if known primers
-# # 	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/OTUs/dereplicated_seqfile.fas')
-# # 	os.system('vsearch --derep_fulllength outputs/OTUs/dereplicated_seqfile_primer.fas --sizein --sizeout --fasta_width 0 --output outputs/OTUs/dereplicated_seqprimer.fas --uc outputs/OTUs/dereplicated_seqprimer.map.txt')
-# # 	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqprimer.fas > outputs/OTUs/derepseqfile_output.swarm')
-# # 	print("Merge SWARM and dereplicate list")
-# # 	os.system('python3 Miseq_scripts/3_postSwarm_v2.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.fas')
-# #	else: 
-# 	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
-# 	print("Merge SWARM and dereplicate list")
-# 	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
-# 	print ("Add read numbers")
-# 	os.system('python3 Miseq_scripts/4_Add_numbers_vHPC.py ' + outputpath + '/OTUs/SWARM_postout.fas ' + outputpath + '/OTUs/SWARM_postout.txt '+listsample)# +' '+ dataname) #  '+ str(runref))
+	os.system('vsearch --derep_fulllength ' + Qlenpath + '/readpooled.fas --sizein --sizeout --strand both --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqfile.fas --uc ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt')
+ # if known primers:
+	os.system('python3 Miseq_scripts/2b_check_primer.py ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
+	os.system('vsearch --derep_fulllength ' + outputpath + '/OTUs/dereplicated_seqfile_primer.fas --sizein --sizeout --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqprimer.fas --uc ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt')
+	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqprimer.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
+	print("Merge SWARM and dereplicate list")
+	os.system('python3 Miseq_scripts/3_postSwarm_v2.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.fas')
+# else: 
+	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
+	print("Merge SWARM and dereplicate list")
+	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
+	print ("Add read numbers")
+	os.system('python3 Miseq_scripts/4_Add_numbers_vHPC.py ' + outputpath + '/OTUs/SWARM_postout.fas ' + outputpath + '/OTUs/SWARM_postout.txt '+listsample)# +' '+ dataname) #  '+ str(runref))
 	print("Prepare files for Chimeras check")
 	if not os.path.exists(outputpath + 'chimeras/'): 
 		os.makedirs(outputpath + 'chimeras/') 	
@@ -107,19 +107,19 @@ def main():
 # 		dname = ""	
 # 	if dname == "":
 # 		print ('Your input dataname is empty.  Try again. ')
-	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
-	try:
-		num = int(i) + 1
-	except TypeError:
-		print ('Your input must be a number.  Try again. ')
-		main()
-	except ValueError:
-		i = ""	
-	if i == "":
-		dSWARM = 1
-	else:
-		dSWARM = int(i)
-	print ("you want to use SWARM at ", str(dSWARM))
+# 	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
+# 	try:
+# 		num = int(i) + 1
+# 	except TypeError:
+# 		print ('Your input must be a number.  Try again. ')
+# 		main()
+# 	except ValueError:
+# 		i = ""	
+# 	if i == "":
+# 		dSWARM = 1
+# 	else:
+# 		dSWARM = int(i)
+# 	print ("you want to use SWARM at ", str(dSWARM))
 	r = input('what is the minimum number of read for each OTU? (hit return for default of 100) :')
 	try:
 		num = float(r) + 1
@@ -185,7 +185,7 @@ def main():
 				print(file, ' in list')
 			else:
 				print("ISSUE with file", file)	
-# 		makesinglefastafile(file, Qlenpath, listsample)
+		makesinglefastafile(file, Qlenpath, listsample)
 	if len(listsamp) != filnum:
 		print(int(len(listsamp)), "<>",int(filnum),  "ISSUE with sample list! PLEASE CHECK !")
 	else:
