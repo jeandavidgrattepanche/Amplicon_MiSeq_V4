@@ -25,7 +25,7 @@ def main():
 	bbmappath = "/home/tuk61790/software/bbmap/"
 # 	pathA = "/Users/jaydiii/Documents/MiSeq_RWS/"+ folderraw
 # 	bbmappath = "/Users/jaydiii/Documents/MiSeq_RWS/bbmap/"
-	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputsmerge2/'
+	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
 	temppath = "/home/tuk61790/" +folderraw.split('/')[0]+  '/temp/'
