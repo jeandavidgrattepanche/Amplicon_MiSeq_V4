@@ -1,9 +1,18 @@
-# python3 MiSeq_pipeline_V4_SWARM_part2.py list_sample.txt folderraw
-# then reply to prompts (read guide before)
 #!/usr/bin/python3
 
+# python3 MiSeq_pipeline_V4_SWARM_part2.py list_sample.txt folderraw
+# then reply to prompts (read guide before)
+
+
+#### TO DO BEFORE RUNNING THE SCRIPT ###
+# update path L91-93
+# update L22 in script Miseq_scripts/1_pool_rename_vHPC.py
+# update water path L115 in script Miseq_scripts/5c_Water_remove_contaminant_vHPC.py
+# update database for BLAST L15 of Miseq_scripts/6_BLASTn_Vsearch.py
+
+
 __author__ = "Jean-David Grattepanche"
-__version__ = "1, November 16, 2020"
+__version__ = "2, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -29,13 +38,13 @@ def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff):
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
 	os.system('vsearch --derep_fulllength ' + Qlenpath + '/readpooled.fas --sizein --sizeout --strand both --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqfile.fas --uc ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt')
- # if known primers see previous version of the version for the script named 2b_check_primer.py
+#if known primers see previous version of the version for the script named 2b_check_primer.py
 # 	os.system('python3 Miseq_scripts/2b_check_primer.py ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
 # 	os.system('vsearch --derep_fulllength ' + outputpath + '/OTUs/dereplicated_seqfile_primer.fas --sizein --sizeout --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqprimer.fas --uc ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt')
 # 	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqprimer.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
 # 	print("Merge SWARM and dereplicate list")
 # 	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.fas')
-# else: 
+#or 
 	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
 	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')

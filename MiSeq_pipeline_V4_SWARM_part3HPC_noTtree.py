@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 #python3 MiSeq_pipeline_V4_SWARM_part3HPC.py RWS_0001-0096_List.txt RWS_0001-0096/RawData
+
+#### TO DO BEFORE RUNNING THE SCRIPT ###
+# update path L39-40
+
 __author__ = "Jean-David Grattepanche"
-__version__ = "8, November 30, 2020"
+__version__ = "3.01, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 

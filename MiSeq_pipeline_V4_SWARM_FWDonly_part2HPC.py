@@ -1,9 +1,18 @@
-# python3 MiSeq_pipeline_V4_SWARM_part2.py list_sample.txt folderraw
-# then reply to prompts (read guide before)
 #!/usr/bin/python3
 
+# python3 MiSeq_pipeline_V4_SWARM_part2.py list_sample.txt folderraw
+# then reply to prompts (read guide before)
+
+
+#### TO DO BEFORE RUNNING THE SCRIPT ###
+# update path L91-93
+# update L22 in script Miseq_scripts/1_pool_rename_vHPC.py
+# update water path L115 in script Miseq_scripts/5c_Water_remove_contaminant_vHPC.py
+# update database for BLAST L15 of Miseq_scripts/6_BLASTn_Vsearch.py
+
+
 __author__ = "Jean-David Grattepanche"
-__version__ = "1, November 16, 2020"
+__version__ = "1.01, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -18,7 +27,6 @@ OTUlist = []
 duplicatelist = []
 
 
-
 def makesinglefastafile(file, Qlenpath, listsample):
 	print('python3 Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
 	os.system('python3 Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
@@ -29,13 +37,6 @@ def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff):
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
 	os.system('vsearch --derep_fulllength ' + Qlenpath + '/readpooled.fas --sizein --sizeout --strand both --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqfile.fas --uc ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt')
-# #  if known primers
-# # 	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/OTUs/dereplicated_seqfile.fas')
-# # 	os.system('vsearch --derep_fulllength outputs/OTUs/dereplicated_seqfile_primer.fas --sizein --sizeout --fasta_width 0 --output outputs/OTUs/dereplicated_seqprimer.fas --uc outputs/OTUs/dereplicated_seqprimer.map.txt')
-# # 	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqprimer.fas > outputs/OTUs/derepseqfile_output.swarm')
-# # 	print("Merge SWARM and dereplicate list")
-# # 	os.system('python3 Miseq_scripts/3_postSwarm_v2.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.map.txt ' + outputpath + '/OTUs/dereplicated_seqprimer.fas')
-# #	else: 
 	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
 	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
@@ -101,12 +102,6 @@ def main():
 	for samp in open(listsample,'r'):
 		if samp.split('\t')[0] not in listsamp:
 			listsamp.append(samp.split('\t')[0])
-# 	try:
-# 		dataname = dname
-# 	except ValueError:
-# 		dname = ""	
-# 	if dname == "":
-# 		print ('Your input dataname is empty.  Try again. ')
 	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
 	try:
 		num = int(i) + 1
@@ -185,7 +180,7 @@ def main():
 				print(file, ' in list')
 			else:
 				print("ISSUE with file", file)	
-#		makesinglefastafile(file, Qlenpath, listsample)
+		makesinglefastafile(file, Qlenpath, listsample)
 	if len(listsamp) != filnum:
 		print(int(len(listsamp)), "<>",int(filnum),  "ISSUE with sample list! PLEASE CHECK !")
 	else:

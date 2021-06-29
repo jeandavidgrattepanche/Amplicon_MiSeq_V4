@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "7, August 16, 2018"
+__version__ = "7.01, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -11,7 +11,6 @@ from Bio import Phylo
 from sys import argv
 import time
 
-# outpath = "/home/tuk61790/v4_SWARM/outputs/"
 t0 = time.time() 
 def main():
 	script, seqfile, OTUfile, readcutoff = argv

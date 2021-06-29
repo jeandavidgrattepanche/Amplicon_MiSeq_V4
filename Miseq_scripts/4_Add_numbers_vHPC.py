@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "6, August 16, 2018"
+__version__ = "6.01, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -12,7 +12,6 @@ from Bio import SeqIO
 from sys import argv
 
 seqlist = {}
-# outpath = "/home/tuk61790/v4_SWARM/outputs/"
 
 def countread(seqfile,otufile,samplelist) : 	
 	outpath = otufile.split('/OTUs')[0]
@@ -29,12 +28,10 @@ def countread(seqfile,otufile,samplelist) :
 		allread = []; occlist = []; abundance = []; readnumber= 0; r34=0
 		for read in line.split('\t'  )[1:]:
 			samplename = ('_').join(read.replace(' ','').split('_')[:-1])
-# 			samplename = read.replace(' ','').split('_')[1].split('.')[0]
 			print(samplename)
 			if samplename in samplelist:
 				toadd= samplename + ' ,'
 				allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
-# 				print(allread)
 				r34 += int(read.split(';size=')[1])
 				if samplename not in occlist:
 					occlist.append(samplename)
@@ -71,7 +68,6 @@ def main():
 	samplelist= []
 	for sample in samplefile:
 		if sample.split('\n')[0] != "":
-# 			samplelist.append(('_').join(sample.split('\n')[0].split('\t')[1].split('_')[:-1]))
 			samplelist.append(sample.split('\n')[0].split('\t')[1])
 	print(samplelist)
 	countread(seqfile,otufile,samplelist) 

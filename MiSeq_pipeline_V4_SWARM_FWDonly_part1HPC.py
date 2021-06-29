@@ -1,13 +1,15 @@
+#!/usr/bin/python3
+# this script will not assemble your MiSeq PE read using bbmap and used only FWD read and vsearch toolkits
+
 # python3 MiSeq_pipeline_v4_SWARM_part1HPC.py folder
 # then reply to prompts (read guide before)
-#!/usr/bin/python3
 
-# this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
- 
+#### TO DO BEFORE RUNNING THE SCRIPT ###
+# update path L23-25 and L28 + L62 and 86 + L59 (range if sample from 5 to 14 should be (5, 11))
+  
 __author__ = "Jean-David Grattepanche"
-__version__ = "1, November 12, 2020"
+__version__ = "1.01, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
-
 
 import string
 import re
@@ -15,16 +17,11 @@ import sys
 import os
 from Bio import SeqIO
 from sys import argv
-
-
-
 	
 def main():
 	folderraw = sys.argv[1]
 	pathA = "/home/tuk61790/"+ folderraw #RWS_0001-0096/RawData
 	bbmappath = "/home/tuk61790/software/bbmap/"
-# 	pathA = "/Users/jaydiii/Documents/MiSeq_RWS/"+ folderraw
-# 	bbmappath = "/Users/jaydiii/Documents/MiSeq_RWS/bbmap/"
 	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputsFWDonly'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
@@ -55,7 +52,7 @@ def main():
 	statSWARMpath = outputpath + '/statSWARM/'
 	if not os.path.exists(statSWARMpath): 
 		os.makedirs(statSWARMpath)
-	resultfile = open("SWARM_sample2.txt","w+") 
+	resultfile = open("SWARM_sample.txt","w+") 
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
@@ -65,17 +62,10 @@ def main():
 			sample="RWS000"+str(i)
 			print(sample)
 			for rawfile in os.listdir(pathA):
-#				print(rawfile,pathA)
 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
 					if "R1" in rawfile:
 						FWD_reads=pathA+rawfile
-						REV_reads=pathA+rawfile.replace("R1","R2")
-#						print(FWD_reads,REV_reads)
-#						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
-#						for linec in open(mergepath+sample+"_merge.fastq",'r'):
-#							if linec.startswith('@'):
-#								numrawreads += 1
 						os.system("vsearch --derep_fulllength "+FWD_reads+" --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
 						os.system("python3 script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
@@ -89,24 +79,17 @@ def main():
 								SWARMnr += 1
 							if int(line2.split('\t')[1]) > 99:
 								SWARMnr2 += 1
-						resultfile = open("SWARM_sample2.txt","a") 
+						resultfile = open("SWARM_sample.txt","a") 
 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
 						resultfile.close()
 		else:
 			sample="RWS00"+str(i)
 			print(sample)
 			for rawfile in os.listdir(pathA):
-#				print(rawfile,pathA)
 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
 					if "R1" in rawfile:
 						FWD_reads=pathA+rawfile
-						REV_reads=pathA+rawfile.replace("R1","R2")
-#						print(FWD_reads,REV_reads)
-#						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
-#						for linec in open(mergepath+sample+"_merge.fastq",'r'):
-#							if linec.startswith('@'):
-#								numrawreads += 1
 						os.system("vsearch --derep_fulllength "+FWD_reads+" --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
 						os.system("python3 script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
@@ -120,7 +103,7 @@ def main():
 								SWARMnr += 1
 							if int(line2.split('\t')[1]) > 99:
 								SWARMnr2 += 1
-						resultfile = open("SWARM_sample2.txt","a") 
+						resultfile = open("SWARM_sample.txt","a") 
 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
 						resultfile.close()
 main()

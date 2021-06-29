@@ -1,11 +1,14 @@
+#!/usr/bin/python3
+# this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
+
 # python3 MiSeq_pipeline_v4_SWARM_part1HPC.py folder
 # then reply to prompts (read guide before)
-#!/usr/bin/python3
 
-# this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
+#### TO DO BEFORE RUNNING THE SCRIPT ###
+# update path L25-27 and L30 + L64 and 96 + L61 (range if sample from 5 to 14 should be (5, 11))
  
 __author__ = "Jean-David Grattepanche"
-__version__ = "1, November 12, 2020"
+__version__ = "2, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -16,15 +19,11 @@ import os
 from Bio import SeqIO
 from sys import argv
 
-
-
 	
 def main():
 	folderraw = sys.argv[1]
 	pathA = "/home/tuk61790/"+ folderraw #RWS_0001-0096/RawData
 	bbmappath = "/home/tuk61790/software/bbmap/"
-# 	pathA = "/Users/jaydiii/Documents/MiSeq_RWS/"+ folderraw
-# 	bbmappath = "/Users/jaydiii/Documents/MiSeq_RWS/bbmap/"
 	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
@@ -55,7 +54,7 @@ def main():
 	statSWARMpath = outputpath + '/statSWARM/'
 	if not os.path.exists(statSWARMpath): 
 		os.makedirs(statSWARMpath)
-	resultfile = open("SWARM_sample2.txt","w+") 
+	resultfile = open("SWARM_sample.txt","w+") 
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
@@ -90,7 +89,7 @@ def main():
 								SWARMnr += 1
 							if int(line2.split('\t')[1]) > 99:
 								SWARMnr2 += 1
-						resultfile = open("SWARM_sample2.txt","a") 
+						resultfile = open("SWARM_sample.txt","a") 
 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
 						resultfile.close()
 		else:
@@ -121,7 +120,7 @@ def main():
 								SWARMnr += 1
 							if int(line2.split('\t')[1]) > 99:
 								SWARMnr2 += 1
-						resultfile = open("SWARM_sample2.txt","a") 
+						resultfile = open("SWARM_sample.txt","a") 
 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
 						resultfile.close()
 main()
