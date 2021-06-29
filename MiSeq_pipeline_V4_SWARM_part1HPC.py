@@ -65,14 +65,15 @@ def main():
 			sample="RWS000"+str(i)
 			print(sample)
 			for rawfile in os.listdir(pathA):
-				print(rawfile,pathA)
+# 				print(rawfile,pathA)
 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
 					if "R1" in rawfile:
 						FWD_reads=pathA+rawfile
 						REV_reads=pathA+rawfile.replace("R1","R2")
-						print(FWD_reads,REV_reads)
+# 						print(FWD_reads,REV_reads)
 						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+						# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
 						for linec in open(mergepath+sample+"_merge.fastq",'r'):
 							if linec.startswith('@'):
 								numrawreads += 1
