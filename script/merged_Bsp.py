@@ -31,9 +31,10 @@ def Merged_taxa(OTUfile, taxarank):
 				listunique.append(elt1.split('\t')[taxarp])
 			else:
 				dicttaxa[elt1.split('\t')[taxarp]].append([int(t) for t in elt1.split('\n')[0].split('\t')[14:]])
-	print(len(listunique), listunique)
+	print(listunique, len(listunique),)
 	out = open("SPtable.txt", "w+")
-	out.write(('\t').join(header.split('\n')[0].split('\t')[1:])+'\n')
+#	out.write('\t'+('\t').join(header.split('\n')[0].split('\t')[1:10]) + '\t' +('\t').join(header.split('\n')[0].split('\t')[11:]) +'\n')
+	out.write('\t'+('\t').join(header.split('\n')[0].split('\t')[1:]) +'\n')
 	list3 = []
 	for elt2 in listunique:
 #		print(dicttaxa[listunique[0]])
@@ -44,7 +45,7 @@ def Merged_taxa(OTUfile, taxarank):
 # 		for elt3 in my_list:
 # 			list3.append(elt3)
 		out = open("SPtable.txt","a")
-		out.write(elt2+'\t'+dictname[elt2]+'\t'+ str(list3).replace(',','\t').replace('[','').replace(']','')+'\n')
+		out.write(elt2+'\t'+dictname[elt2]+'\t-\t'+ str(list3).replace(',','\t').replace('[','').replace(']','')+'\n')
 		out.close()
 def main():
 	script, OTUfile, taxarank = argv
