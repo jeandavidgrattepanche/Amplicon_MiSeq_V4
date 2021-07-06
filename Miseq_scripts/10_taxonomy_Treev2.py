@@ -32,7 +32,7 @@ def checkClade(tree, treefile):
 	print("start walking in tree")
 	seen = []
 	outpath = treefile.split('/outgroup_removal/')[0]
-	out = open(outpath +'/taxonomic_assignment/taxonomy_by_Tree_r.txt','w+')
+	out = open(outpath +'/taxonomic_assignment/taxonomy_by_Tree.txt','w+')
 	print('ouput clear') ; j = 0
 	for clade in tree.get_terminals():
 		i = 0 ; j+=1
@@ -47,7 +47,7 @@ def checkClade(tree, treefile):
 #					print(leaf.name)
 					if 'OTU' not in leaf.name and clade.name not in seen:
 						print(clade.name, 'closely related at', str(i),'to ',leaf.name, 'distance=', tree.distance(clade,leaf))
-						out = open(outpath +'/taxonomic_assignment/taxonomy_by_Tree_r.txt','a')
+						out = open(outpath +'/taxonomic_assignment/taxonomy_by_Tree.txt','a')
 						out.write(clade.name+'\t'+ str(i) +'\t'+str(tree.distance(clade,leaf))+ '\t'+leaf.name+'\n')
 						seen.append(clade.name)
 						out.close()
