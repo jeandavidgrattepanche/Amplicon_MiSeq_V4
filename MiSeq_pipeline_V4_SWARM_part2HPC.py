@@ -5,7 +5,7 @@
 
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update path L91-93
+# update the paths to L99-101
 # update L22 in script Miseq_scripts/1_pool_rename_vHPC.py
 # update water path L115 in script Miseq_scripts/5c_Water_remove_contaminant_vHPC.py
 # update database for BLAST L15 of Miseq_scripts/6_BLASTn_Vsearch.py

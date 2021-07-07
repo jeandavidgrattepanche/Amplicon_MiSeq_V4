@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 # this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
-
 # python3 MiSeq_pipeline_v4_SWARM_part1HPC.py folder
 # then reply to prompts (read guide before)
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update path L25-27 and L30 + L64 and 96 + L61 (range if sample from 5 to 14 should be (5, 11))
+# update the paths to L25-27 and L30 
+# update first few letter of file (RWS00 in my case) L64 and L96
+# update the number of samples to L61 (range of sample from 5 to 14 [in my case RWS0005 to RWS0014] should be range(5, 15))
+# update L74 and L106, update the values of bbmerge to match the stringency you want. 
  
 __author__ = "Jean-David Grattepanche"
 __version__ = "2, June 29, 2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
-
 
 import string
 import re
@@ -18,12 +19,11 @@ import sys
 import os
 from Bio import SeqIO
 from sys import argv
-
 	
 def main():
 	folderraw = sys.argv[1]
-	pathA = "/home/tuk61790/"+ folderraw #RWS_0001-0096/RawData
-	bbmappath = "/home/tuk61790/software/bbmap/"
+	pathA = "/home/tuk61790/"+ folderraw #where your folder are located
+	bbmappath = "/home/tuk61790/software/bbmap/" #where bbmap is installed
 	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
@@ -61,7 +61,7 @@ def main():
 	for i in range(1,97):
 		print(i)
 		if i < 10:
-			sample="RWS000"+str(i)
+			sample="RWS000"+str(i) #RWS should match the beginning of your sample or update the line
 			print(sample)
 			for rawfile in os.listdir(pathA):
 # 				print(rawfile,pathA)
@@ -93,7 +93,7 @@ def main():
 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
 						resultfile.close()
 		else:
-			sample="RWS00"+str(i)
+			sample="RWS00"+str(i) #RWS should match the beginning of your sample or update the line
 			print(sample)
 			for rawfile in os.listdir(pathA):
 				print(rawfile,pathA)
