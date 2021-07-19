@@ -37,7 +37,7 @@ def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff):
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
 	os.system('vsearch --derep_fulllength ' + Qlenpath + '/readpooled.fas --sizein --sizeout --strand both --fasta_width 0 --output ' + outputpath + '/OTUs/dereplicated_seqfile.fas --uc ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt')
-	os.system('swarm -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
+	os.system('swarm -f -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
 	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
 	print ("Add read numbers")
