@@ -62,4 +62,10 @@ done
 $ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
 done
 
+##PR2 for taxonomic assignment
+$ mkdir db_v4
+$ cd db_v4
+$ wget https://github.com/pr2database/pr2database/releases/download/v4.14.0/pr2_version_4.14.0_SSU_UTAX.fasta.gz
+$ tar xzvf pr2_version_4.14.0_SSU_UTAX.fasta.gz
+
 You are now ready to run the pipeline
