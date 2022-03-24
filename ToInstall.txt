@@ -7,12 +7,18 @@ $ mkdir software
 $ cd software
 And install all in this folder
 
+##BBmap
+$ cd software
+$ wget https://sourceforge.net/projects/bbmap/files/BBMap_38.96.tar.gz
+$ tar xzf BBMap_38.96.tar.gz
+create the working folder bbmap. done
 
 ## install SWARM
 $ cd software
 $ git clone https://github.com/torognes/swarm.git
 $ cd swarm/src/
 $ make
+done
 
 ## vsearch 
 $ cd software
@@ -23,6 +29,7 @@ $ ./autogen.sh
 $ ./configure CFLAGS="-O3" CXXFLAGS="-O3"
 $ make
 $ make install
+done
 
 ## MAFFT
 $ cd software 
@@ -32,14 +39,14 @@ $ cd mafft-7.490-with-extensions-src/core
 $ make clean
 $ make
 $ make install
-
-
+done
 
 ## RAxML
 $ cd software
 $ git clone https://github.com/stamatak/standard-RAxML.git
 $ cd standard-RAxML-master/
 $ make -f Makefile.AVX2.PTHREADS.gcc
+done
 
 ## EMBOSS 
 $ cd software
@@ -49,9 +56,10 @@ $ cd EMBOSS-6.6.0
 $ ./configure —prefix=/usr/local/emboss
 $ make -j 4 
 $ make install
-
+done
 
 ##Amplicon pipeline
 $ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
+done
 
 You are now ready to run the pipeline
