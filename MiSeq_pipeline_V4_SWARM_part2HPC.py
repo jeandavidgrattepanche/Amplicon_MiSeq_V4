@@ -5,9 +5,7 @@
 
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update the paths to L99-101
 # update L22 in script Miseq_scripts/1_pool_rename_vHPC.py
-# update water path L115 in script Miseq_scripts/5c_Water_remove_contaminant_vHPC.py
 # update database for BLAST L15 of Miseq_scripts/6_BLASTn_Vsearch.py
 
 
@@ -96,9 +94,9 @@ def main():
 	samplefile = sys.argv[1]
 	folderraw = sys.argv[2]
 	listsamp = []
-	bbmappath = "/home/tuk61790/software/bbmap/"
-	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
-	temppath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/temp/'
+	bbmappath = os.getcwd()+"/software/bbmap/"
+	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputs/'
+	temppath = os.getcwd() +folderraw.split('/')[0]+ '/temp/'
 	Qlenpath = outputpath + '/Qlen/'
 
 	try:
