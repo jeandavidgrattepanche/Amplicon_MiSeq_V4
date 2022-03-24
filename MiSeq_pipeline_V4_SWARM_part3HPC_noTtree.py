@@ -2,7 +2,7 @@
 #python3 MiSeq_pipeline_V4_SWARM_part3HPC.py RWS_0001-0096_List.txt RWS_0001-0096/RawData
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update path L39-40
+
 
 __author__ = "Jean-David Grattepanche"
 __version__ = "3.01, June 29, 2021"
@@ -36,8 +36,8 @@ def main():
 	b = sys.argv[1]
 	folderraw = sys.argv[2]
 	listsamp = []
-	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
-	temppath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/temp/'
+	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputs/'
+	temppath = os.getcwd() +folderraw.split('/')[0]+ '/temp/'
 	try:
 		listsample = b
 	except ValueError:
