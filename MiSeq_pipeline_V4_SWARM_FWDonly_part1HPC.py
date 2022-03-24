@@ -5,7 +5,7 @@
 # then reply to prompts (read guide before)
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update path L23-25 and L28 + L62 and 86 + L59 (range if sample from 5 to 14 should be (5, 11))
+# L62 and 86 + L59 (range if sample from 5 to 14 should be (5, 11))
   
 __author__ = "Jean-David Grattepanche"
 __version__ = "1.01, June 29, 2021"
@@ -20,12 +20,12 @@ from sys import argv
 	
 def main():
 	folderraw = sys.argv[1]
-	pathA = "/home/tuk61790/"+ folderraw #RWS_0001-0096/RawData
-	bbmappath = "/home/tuk61790/software/bbmap/"
-	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputsFWDonly'
+	pathA = os.getcwd() + folderraw #RWS_0001-0096/RawData
+	bbmappath = os.getcwd() +"/software/bbmap/"
+	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputsFWDonly'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
-	temppath = "/home/tuk61790/" +folderraw.split('/')[0]+  '/temp/'
+	temppath = os.getcwd() +folderraw.split('/')[0]+  '/temp/'
 	if not os.path.exists(temppath): 
 		os.makedirs(temppath) 	
 	mergepath = outputpath + '/merge/'
