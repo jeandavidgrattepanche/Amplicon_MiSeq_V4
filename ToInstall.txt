@@ -3,17 +3,19 @@ $ conda install -c conda-forge biopython
 
 => does not work for python 3.10
 
-mkdir software
-cd software
+$ mkdir software
+$ cd software
 And install all in this folder
 
 
 ## install SWARM
+$ cd software
 $ git clone https://github.com/torognes/swarm.git
-$ cd document/softwares/swarm/src/
+$ cd swarm/src/
 $ make
 
 ## vsearch 
+$ cd software
 $ wget https://github.com/torognes/vsearch/archive/v2.21.1.tar.gz
 $ tar xzf v2.21.1.tar.gz
 $ cd vsearch-2.21.1
@@ -23,7 +25,7 @@ $ make
 $ make install
 
 ## MAFFT
-$ cd software/ 
+$ cd software 
 $ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.tgz
 $ tar xfvz mafft-7.490-with-extensions-src.tgz
 $ cd mafft-7.490-with-extensions-src/core
@@ -34,7 +36,7 @@ $ make install
 
 
 ## RAxML
-$ cd software/
+$ cd software
 $ git clone https://github.com/stamatak/standard-RAxML.git
 $ cd standard-RAxML-master/
 $ make -f Makefile.AVX2.PTHREADS.gcc
