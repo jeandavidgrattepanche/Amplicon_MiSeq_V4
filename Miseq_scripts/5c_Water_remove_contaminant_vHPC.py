@@ -112,7 +112,7 @@ def main():
 			outseq=open(outpath + 'chimeras/seqtemp.fas','w')
 			outseq.write('>'+Seq.id+'\n'+str(Seq.seq)+'\n')
 			outseq.close()
-			cline = '/home/tuk61790/software/EMBOSS-6.6.0/emboss/water -asequence='+ outpath + 'ref_for_water.fasta -bsequence='+ outpath + 'chimeras/seqtemp.fas -gapopen=10 -gapextend=0.5 -outfile='+outpath + 'chimeras/water.txt'		
+			cline = os.getcwd()+'/software/EMBOSS-6.6.0/emboss/water -asequence='+ outpath + 'ref_for_water.fasta -bsequence='+ outpath + 'chimeras/seqtemp.fas -gapopen=10 -gapextend=0.5 -outfile='+outpath + 'chimeras/water.txt'		
 #			print(cline)
 			os.system(cline)
 			test(seqfile, seqdict)
