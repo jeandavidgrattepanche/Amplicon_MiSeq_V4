@@ -4,7 +4,7 @@
 # then reply to prompts (read guide before)
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
-# update the paths to L25-27 and L30 
+
 # update first few letter of file (RWS00 in my case) L64 and L96
 # update the number of samples to L61 (range of sample from 5 to 14 [in my case RWS0005 to RWS0014] should be range(5, 15))
 # update L74 and L106, update the values of bbmerge to match the stringency you want. 
@@ -22,12 +22,12 @@ from sys import argv
 	
 def main():
 	folderraw = sys.argv[1]
-	pathA = "/home/tuk61790/"+ folderraw #where your folder are located
-	bbmappath = "/home/tuk61790/software/bbmap/" #where bbmap is installed
-	outputpath = "/home/tuk61790/" +folderraw.split('/')[0]+ '/outputs/'
+	pathA = os.getcwd()+ folderraw #where your folder are located
+	bbmappath = os.getcwd() +"/software/bbmap/" #where bbmap is installed
+	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
-	temppath = "/home/tuk61790/" +folderraw.split('/')[0]+  '/temp/'
+	temppath = os.getcwd() +folderraw.split('/')[0]+  '/temp/'
 	if not os.path.exists(temppath): 
 		os.makedirs(temppath) 	
 	mergepath = outputpath + '/merge/'
