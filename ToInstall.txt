@@ -1,0 +1,55 @@
+##biopython on Compute:
+$ conda install -c conda-forge biopython
+
+=> does not work for python 3.10
+
+mkdir software
+cd software
+And install all in this folder
+
+
+## install SWARM
+$ git clone https://github.com/torognes/swarm.git
+$ cd document/softwares/swarm/src/
+$ make
+
+## vsearch 
+$ wget https://github.com/torognes/vsearch/archive/v2.21.1.tar.gz
+$ tar xzf v2.21.1.tar.gz
+$ cd vsearch-2.21.1
+$ ./autogen.sh
+$ ./configure CFLAGS="-O3" CXXFLAGS="-O3"
+$ make
+$ make install
+
+## MAFFT
+$ cd software/ 
+$ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.tgz
+$ tar xfvz mafft-7.490-with-extensions-src.tgz
+$ cd mafft-7.490-with-extensions-src/core
+$ make clean
+$ make
+$ make install
+
+
+
+## RAxML
+$ cd software/
+$ git clone https://github.com/stamatak/standard-RAxML.git
+$ cd standard-RAxML-master/
+$ make -f Makefile.AVX2.PTHREADS.gcc
+
+## EMBOSS 
+$ cd software
+$ wget ftp://emboss.open-bio.org/pub/EMBOSS/emboss-latest.tar.gz
+$ tar -xzvf emboss-latest.tar.gz
+$ cd EMBOSS-6.6.0
+$ ./configure —prefix=/usr/local/emboss
+$ make -j 4 
+$ make install
+
+
+##Amplicon pipeline
+$ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
+
+You are now ready to run the pipeline
