@@ -1,3 +1,14 @@
+$ mkdir software
+$ cd software
+And install all in this folder
+
+##we will use python 3.9
+
+##conda
+$ cd software
+$ wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
+$ bash Miniconda3-py39_4.11.0-Linux-x86_64.sh
+
 ##biopython on Compute:
 $ conda install -c conda-forge biopython
 
@@ -6,6 +17,9 @@ $ conda install -c conda-forge biopython
 $ mkdir software
 $ cd software
 And install all in this folder
+
+
+
 
 ##BBmap
 $ cd software
@@ -26,7 +40,8 @@ $ wget https://github.com/torognes/vsearch/archive/v2.21.1.tar.gz
 $ tar xzf v2.21.1.tar.gz
 $ cd vsearch-2.21.1
 $ ./autogen.sh
-$ ./configure CFLAGS="-O3" CXXFLAGS="-O3"
+##change PATH by your path
+$ ./configure CFLAGS="-O3" CXXFLAGS="-O3" --prefix=/PATH --libdir=/PATH/software
 $ make
 $ make install
 done
@@ -44,7 +59,7 @@ done
 ## RAxML
 $ cd software
 $ git clone https://github.com/stamatak/standard-RAxML.git
-$ cd standard-RAxML-master/
+$ cd standard-RAxML/
 $ make -f Makefile.AVX2.PTHREADS.gcc
 done
 
