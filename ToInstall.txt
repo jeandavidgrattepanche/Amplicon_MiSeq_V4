@@ -40,7 +40,7 @@ $ wget https://github.com/torognes/vsearch/archive/v2.21.1.tar.gz
 $ tar xzf v2.21.1.tar.gz
 $ cd vsearch-2.21.1
 $ ./autogen.sh
-##change PATH by your path
+##change PATH by your path (check using pwd)
 $ ./configure CFLAGS="-O3" CXXFLAGS="-O3" --prefix=/PATH --libdir=/PATH/software
 $ make
 $ make install
@@ -52,6 +52,7 @@ $ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.
 $ tar xfvz mafft-7.490-with-extensions-src.tgz
 $ cd mafft-7.490-with-extensions-src/core
 $ make clean
+$ ./configure --prefix=/PATH --libdir=/PATH/software
 $ make
 $ make install
 done
@@ -68,7 +69,8 @@ $ cd software
 $ wget ftp://emboss.open-bio.org/pub/EMBOSS/emboss-latest.tar.gz
 $ tar -xzvf emboss-latest.tar.gz
 $ cd EMBOSS-6.6.0
-$ ./configure —prefix=/usr/local/emboss
+##change PATH by your path (check using pwd)
+$ ./configure --prefix=/PATH --libdir=/PATH/software
 $ make -j 4 
 $ make install
 done
@@ -81,6 +83,6 @@ done
 $ mkdir db_v4
 $ cd db_v4
 $ wget https://github.com/pr2database/pr2database/releases/download/v4.14.0/pr2_version_4.14.0_SSU_UTAX.fasta.gz
-$ tar xzvf pr2_version_4.14.0_SSU_UTAX.fasta.gz
+$ gzip -d pr2_version_4.14.0_SSU_UTAX.fasta.gz
 
 You are now ready to run the pipeline
