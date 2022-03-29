@@ -52,8 +52,7 @@ $ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.
 $ tar xfvz mafft-7.490-with-extensions-src.tgz
 $ cd mafft-7.490-with-extensions-src/core
 $ make clean
-$ ./configure --prefix=/PATH --libdir=/PATH/software
-$ make
+$ make DESTDIR=/PATH/software/mafft-7.490-with-extensions-src/core
 $ make install
 done
 
@@ -70,8 +69,7 @@ $ wget ftp://emboss.open-bio.org/pub/EMBOSS/emboss-latest.tar.gz
 $ tar -xzvf emboss-latest.tar.gz
 $ cd EMBOSS-6.6.0
 ##change PATH by your path (check using pwd)
-$ ./configure --prefix=/PATH --libdir=/PATH/software
-$ make -j 4 
+$ make DESTDIR=/PATH/software/EMBOSS-6.6.0 -j 4 
 $ make install
 done
 
