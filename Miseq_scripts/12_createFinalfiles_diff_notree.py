@@ -19,9 +19,9 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 		seqlist[Seq.id.split('_')[0].split('-')[0]] = [Seq.id,str(Seq.seq)]
 
 	for record in open(BLASTtsv,'r'):
-		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
-		print(BLASTresults)
-		BLAST[record.split('_')[0].split('\t')[0]] = BLASTresults
+*		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
+*		print(BLASTresults)
+*		BLAST[record.split('_')[0].split('\t')[0]] = BLASTresults
 		
 	outfile = open(outpath+'/OTUs_ingroup/OTUtable_ingroup_noTtree.txt','w')
 	outfile.write('OTU\tBtaxo_rank1\tBtaxo_rank2\tBtaxo_rank3\tBtaxo_rank4\tBsp\tBacc_number\tid%\tEvalue\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
