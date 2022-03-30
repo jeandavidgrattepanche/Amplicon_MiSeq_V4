@@ -94,9 +94,9 @@ def main():
 	samplefile = sys.argv[1]
 	folderraw = sys.argv[2]
 	listsamp = []
-	bbmappath = os.getcwd()+"/software/bbmap/"
-	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputs/'
-	temppath = os.getcwd() +folderraw.split('/')[0]+ '/temp/'
+	bbmappath = os.path.abspath(os.path.join(os.getcwd(), '..')) +"/software/bbmap/"
+	outputpath = os.getcwd()+"/"+folderraw.split('/')[0]+ '/outputs/'
+	temppath = os.getcwd()+"/"+folderraw.split('/')[0]+ '/temp/'
 	Qlenpath = outputpath + '/Qlen/'
 
 	try:
@@ -114,19 +114,19 @@ def main():
 # 		dname = ""	
 # 	if dname == "":
 # 		print ('Your input dataname is empty.  Try again. ')
-# 	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
-# 	try:
-# 		num = int(i) + 1
-# 	except TypeError:
-# 		print ('Your input must be a number.  Try again. ')
-# 		main()
-# 	except ValueError:
-# 		i = ""	
-# 	if i == "":
-# 		dSWARM = 1
-# 	else:
-# 		dSWARM = int(i)
-# 	print ("you want to use SWARM at ", str(dSWARM))
+	i = input('What distance would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
+	try:
+		num = int(i) + 1
+	except TypeError:
+		print ('Your input must be a number.  Try again. ')
+		main()
+	except ValueError:
+		i = ""	
+	if i == "":
+		dSWARM = 1
+	else:
+		dSWARM = int(i)
+	print ("you want to use SWARM at ", str(dSWARM))
 	r = input('what is the minimum number of read for each OTU? (hit return for default of 100) :')
 	try:
 		num = float(r) + 1
