@@ -33,7 +33,7 @@ Note: the first element is a part of name of the file generated from HTS and the
 	
 3- Copy the script folder, the 3 scripts named MiSeq_pipeline_V4_SWARM_part(1,2 and 3)_HPC.py from this repository and add all in the folder where you save the List_samples.txt and the rawdata folder (suggestion MiSeq_folder).
 
-4- primer file should be in the db folder (with the PR2 UTAX.fasta). Add a fasta file with your primers such as: 
+(facultative) 4- primer file should be in the db folder (with the PR2 UTAX.fasta). Add a fasta file with your primers such as: 
 
 	'>'V4_f
 	
@@ -85,12 +85,21 @@ More descriptions are available in Guide_MiSeqPipeline_2018.txt (not up to date 
 
 An undergraduate proofread guide can be shared on request.
 
-# Amplicon_MiSeq_pipeline for other lineages
-This set of scripts can be edited to use another set of primers/taxa.
+#Run on Temple server
 
-part 1: Do not forget to update PEAR parameters in MiSeq_pipeline_V4_SWARM_part1HPC.py (see here for parameters https://sco.h-its.org/exelixis/web/software/pear/doc.html)
+$ module load python/3.x.x (python you use to install biopython and other software)
+$ module load java
+$ python3 MiSeq_pipeline_V4_SWARM_part1.py ExampleFile/RawData/
 
-part2: build your own database folder (see https://github.com/jeandavidgrattepanche/SSU_DataBase_builiding for scripts and more information) and replacing the database in the script MiSeq_pipeline_V4_SWARM_part2HPC.py and script 6 (look for SSU_db and replace by the corresponding files). 
+Results for the 4 samples attached to this pipeline:
+SWARM_sample.txt 
+Sample	reads	cleanreads	uniquereads	SWARM	SWARM10	SWARM100
+RWS0001	105398	86663	65786	42301	191	44
+RWS0002	134835	49025	43050	32866	93	13
+RWS0003	99197	77539	67826	51393	184	31
+RWS0004	87184	72912	59482	41748	178	40
+
+$ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/RawData/
 
 Where to update your reference database:
 - MiSeq_pipeline_V4_SWARM_part2HPC.py  

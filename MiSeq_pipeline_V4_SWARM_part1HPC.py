@@ -23,7 +23,8 @@ from sys import argv
 def main():
 	folderraw = sys.argv[1]
 	pathA = os.getcwd()+"/"+ folderraw #where your folder are located
-	bbmappath = os.getcwd() +"/software/bbmap/" #where bbmap is installed
+	bbmappath = os.path.abspath(os.path.join(os.getcwd(), '..')) +"/software/bbmap/" #where bbmap is installed
+	os.path.abspath(os.path.join(os.getcwd(), '..'))
 	outputpath = os.getcwd()+"/"+folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
@@ -70,8 +71,9 @@ def main():
 					if "R1" in rawfile:
 						FWD_reads=pathA+rawfile
 						REV_reads=pathA+rawfile.replace("R1","R2")
-# 						print(FWD_reads,REV_reads)
-						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+#						print(FWD_reads,REV_reads)
+						print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+						os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
 						# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
 						for linec in open(mergepath+sample+"_merge.fastq",'r'):
 							if linec.startswith('@'):
