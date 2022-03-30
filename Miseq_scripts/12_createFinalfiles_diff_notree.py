@@ -20,7 +20,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 
 	for record in open(BLASTtsv,'r'):
 		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
-# 		print(BLASTresults)
+		print(BLASTresults)
 		BLAST[record.split('_')[0].split('\t')[0]] = BLASTresults
 		
 	outfile = open(outpath+'/OTUs_ingroup/OTUtable_ingroup_noTtree.txt','w')
@@ -35,7 +35,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 		abundance = []
 		readnumber= 0
 		for read in line.split('\n')[0].split('\t'  )[1:]:
-			samplename = read.replace(" ","").replace('"',"").replace('"','').split('_')[0]
+			samplename = ('-').join(read.replace(" ","").replace('"',"").replace('"','').split('_')[0:3])
 			if samplename in samplelist:
 				allread.append(samplename)
 				if samplename not in occlist:
