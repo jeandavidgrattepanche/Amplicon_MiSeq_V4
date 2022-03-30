@@ -93,11 +93,17 @@ $ python3 MiSeq_pipeline_V4_SWARM_part1.py ExampleFile/RawData/
 
 Results for the 4 samples attached to this pipeline:
 SWARM_sample.txt 
-Sample	reads	cleanreads	uniquereads	SWARM	SWARM10	SWARM100
-RWS0001	105398	86663	65786	42301	191	44
-RWS0002	134835	49025	43050	32866	93	13
-RWS0003	99197	77539	67826	51393	184	31
-RWS0004	87184	72912	59482	41748	178	40
+
+
+
+|  Sample |  reads | cleanreads | uniquereads | SWARM | SWARM10 | SWARM100 |
+|---------:|--------:|------------:|-------------:|-------:|---------:|----------:|
+| RWS0001 | 105398 |   86663    |       65786 | 42301 |     191 |       44 | 
+| RWS0002 | 134835 |   49025    |       43050 | 32866 |      93 |       13 | 
+| RWS0003 |  99197 |   77539    |       67826 | 51393 |     184 |       31 | 
+| RWS0004 |  87184 |   72912    |       59482 | 41748 |     178 |       40 | 
+
+
 
 $ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/RawData/
 
