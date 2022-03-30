@@ -87,9 +87,11 @@ An undergraduate proofread guide can be shared on request.
 
 #Run on Temple server
 
+```
 $ module load python/3.x.x (python you use to install biopython and other software)
 $ module load java
 $ python3 MiSeq_pipeline_V4_SWARM_part1.py ExampleFile/RawData/
+```
 
 Results for the 4 samples attached to this pipeline:
 SWARM_sample.txt 
@@ -104,23 +106,9 @@ SWARM_sample.txt
 | RWS0004 |  87184 |   72912    |       59482 | 41748 |     178 |       40 | 
 
 
-
+```
 $ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/RawData/
+```
 
-Where to update your reference database:
-- MiSeq_pipeline_V4_SWARM_part2HPC.py  
-
-	*71 and 78: replace file after '--mapout' by your reference sequence alignment
-	
-	*72 and 79: replace the last argument by your list of column with missing data
-	
-	*76 and 83/84: replace the "-t" argument by your reference tree
-	
-- script 6: line 15 
-
-	line 15: replace the SSU_db value by your db e.g. the PR2database (do not forget to add the database folder)
-
-
-Create also your primer file. **IMPORTANT: the name of the primer must be as following: text_r or text_f. r and f for reverse and forward and text should not contain any underscores.** see above for more details
 
 
