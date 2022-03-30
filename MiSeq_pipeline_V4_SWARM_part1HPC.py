@@ -22,36 +22,36 @@ from sys import argv
 	
 def main():
 	folderraw = sys.argv[1]
-	pathA = os.getcwd()+ folderraw #where your folder are located
+	pathA = os.getcwd()+"/"+ folderraw #where your folder are located
 	bbmappath = os.getcwd() +"/software/bbmap/" #where bbmap is installed
-	outputpath = os.getcwd() +folderraw.split('/')[0]+ '/outputs/'
+	outputpath = os.getcwd()+"/"+folderraw.split('/')[0]+ '/outputs/'
 	if not os.path.exists(outputpath): 
 		os.makedirs(outputpath) 	
-	temppath = os.getcwd() +folderraw.split('/')[0]+  '/temp/'
+	temppath = os.getcwd() +"/"+folderraw.split('/')[0]+  '/temp/'
 	if not os.path.exists(temppath): 
 		os.makedirs(temppath) 	
-	mergepath = outputpath + '/merge/'
+	mergepath = outputpath + 'merge/'
 	if not os.path.exists(mergepath): 
 		os.makedirs(mergepath) 	
-	unmergepath = outputpath + '/unmerged/'
+	unmergepath = outputpath + 'unmerged/'
 	if not os.path.exists(unmergepath): 
 		os.makedirs(unmergepath) 	
-	histpath = outputpath + '/histo/'
+	histpath = outputpath + 'histo/'
 	if not os.path.exists(histpath): 
 		os.makedirs(histpath) 	
-	derepApath = outputpath + '/derepA/'
+	derepApath = outputpath + 'derepA/'
 	if not os.path.exists(derepApath): 
 		os.makedirs(derepApath) 			
-	derepBpath = outputpath + '/derepB/'
+	derepBpath = outputpath + 'derepB/'
 	if not os.path.exists(derepBpath): 
 		os.makedirs(derepBpath) 		
-	Qlenpath = outputpath + '/Qlen/'
+	Qlenpath = outputpath + 'Qlen/'
 	if not os.path.exists(Qlenpath): 
 		os.makedirs(Qlenpath) 		
-	SWARMpath = outputpath + '/SWARM/'
+	SWARMpath = outputpath + 'SWARM/'
 	if not os.path.exists(SWARMpath): 
 		os.makedirs(SWARMpath) 		
-	statSWARMpath = outputpath + '/statSWARM/'
+	statSWARMpath = outputpath + 'statSWARM/'
 	if not os.path.exists(statSWARMpath): 
 		os.makedirs(statSWARMpath)
 	resultfile = open("SWARM_sample.txt","w+") 
