@@ -69,6 +69,8 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 		print("Run BLAST")
 		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py '+outputpath +'chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
 #		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
+	if not os.path.exists(outputpath + 'outgroup_removal/'): 
+		os.makedirs(outputpath + 'outgroup_removal/') 
 
 def makealignment(AssTaxo, outputpath):
 	print("make alignment for outgroup removal. Take a while\n")
