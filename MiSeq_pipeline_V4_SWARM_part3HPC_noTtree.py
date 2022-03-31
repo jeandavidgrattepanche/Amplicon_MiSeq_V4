@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#python3 MiSeq_pipeline_V4_SWARM_part3HPC.py RWS_0001-0096_List.txt RWS_0001-0096/RawData
+# python3 MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFile/List_samples.txt ExampleFile/RawData/
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
 

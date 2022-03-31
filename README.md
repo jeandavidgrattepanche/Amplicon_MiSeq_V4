@@ -73,7 +73,7 @@ Check the ToInstall.txt which describes the softwares required by the pipeline a
 ```
 $ module load python/3.x.x (python you used to install biopython and other softwares)
 $ module load java
-$ python3 MiSeq_pipeline_V4_SWARM_part1.py ExampleFile/RawData/
+$ python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFile/RawData/
 ```
 
 Results for the 4 samples attached to this pipeline:
@@ -90,8 +90,11 @@ SWARM_sample.txt
 
 
 ```
-$ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/List_samples.txt ExampleFile/RawData/
+$ python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFile/List_samples.txt ExampleFile/RawData/
 ```
 **working in the last part of the pipeline to reomve outgroup based on tree or to skip this step and produce the final table.**
+```
+$ python3 MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFile/List_samples.txt ExampleFile/RawData/
+```
 
 
