@@ -72,9 +72,13 @@ Check the ToInstall.txt which describes the softwares required by the pipeline a
 
 To run the pipeline on Compute:
 ```
-$ cd Amplicon_MiSeq_V4-main/
-$ module load python/3.x.x (python you used to install biopython and other softwares)
+$ cd Amplicon_MiSeq_V4/
 $ module load java
+
+$ conda activate my_env
+OR
+$ module load python/3.x.x (python you used to install biopython and other softwares)
+
 $ python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
 ```
 
