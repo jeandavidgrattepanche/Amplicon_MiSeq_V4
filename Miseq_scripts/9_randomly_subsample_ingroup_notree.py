@@ -12,9 +12,12 @@ from Bio import SeqIO
 from sys import argv
 from random import randrange
 
-samples = []; readpersamplesdict= {}; listreaddict= {}
+samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
 
-def countread(readmap,samplelist): 	
+def countread(seqfile, readmap,samplelist): 	
+	for seq in SeqIO.parse(open(seqfile,'r'),'fasta'):
+		tokeep.append(seq.id.split('_')[0])
+
 	outlog = open('readpersample_cleaned.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
 	print(folder)
@@ -24,13 +27,15 @@ def countread(readmap,samplelist):
 		readnumber= 0
 		for line in open(readmap,'r'):
 			OTUID = line.split('\t')[0]
-			for read in line.split('\t'  )[1:]:
-				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[0:3])
-# 				print(samplename)
-				if samplename == sample.replace('_','-').split('\t')[1].split('\n')[0]:
-					readnumber=readnumber + 1
-					listreaddict[sample.replace('_','-').split('\t')[1].split('\n')[0]].append(OTUID+";"+read)
-	
+			if OTUID in tokeep:
+				for read in line.split('\t'  )[1:]:
+					samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[0:3])
+		# 				print(samplename)
+					if samplename == sample.replace('_','-').split('\t')[1].split('\n')[0]:
+						readnumber=readnumber + 1
+						listreaddict[sample.replace('_','-').split('\t')[1].split('\n')[0]].append(OTUID+";"+read)
+# 			else:
+# 				print(OTUID, ' was removed in previous step')
 
 		readpersamplesdict[sample.replace('_','-').split('\t')[1].split('\n')[0]] = str(readnumber)
 		print(sample.replace('_','-').split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
@@ -82,6 +87,6 @@ def countread(readmap,samplelist):
 	outfile.close()		
 	
 def main():
-	script, otufile, listofsample = argv 
-	countread(otufile,listofsample) 
+	script, seqfile, otufile, listofsample = argv 
+	countread(seqfile, otufile,listofsample) 
 main()
