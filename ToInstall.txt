@@ -2,7 +2,10 @@ $ mkdir software
 $ cd software
 And install all in this folder
 
-##we will use python 3.9
+##we will use python 3.9.4
+$ python --version
+or
+$ python3 --version
 
 ##conda
 $ cd software
@@ -10,16 +13,11 @@ $ wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.s
 $ bash Miniconda3-py39_4.11.0-Linux-x86_64.sh
 
 ##biopython on Compute:
+$ conda create --name my_env python=3.9.4
+$ conda activate my_env
 $ conda install -c conda-forge biopython
 
 => does not work for python 3.10
-
-$ mkdir software
-$ cd software
-And install all in this folder
-
-
-
 
 ##BBmap
 $ cd software
@@ -30,7 +28,7 @@ create the working folder bbmap. done
 ## install SWARM
 $ cd software
 $ git clone https://github.com/torognes/swarm.git
-$ cd swarm/src/
+$ cd swarm/
 $ make
 done
 
@@ -41,7 +39,7 @@ $ tar xzf v2.21.1.tar.gz
 $ cd vsearch-2.21.1
 $ ./autogen.sh
 ##change PATH by your path (check using pwd)
-$ ./configure CFLAGS="-O3" CXXFLAGS="-O3" --prefix=/PATH --libdir=/PATH/software
+$ ./configure CFLAGS="-O3" CXXFLAGS="-O3" --prefix=/PATH
 $ make
 $ make install
 done
@@ -51,7 +49,7 @@ $ cd software
 $ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.tgz
 $ tar xfvz mafft-7.490-with-extensions-src.tgz
 $ cd mafft-7.490-with-extensions/core
-$ vi Make file
+$ vi Makefile
 edit to line to PREFIX = /home/tuxxxx/software/mafft/
 press esc and type :wq
 
@@ -73,16 +71,18 @@ $ wget ftp://emboss.open-bio.org/pub/EMBOSS/emboss-latest.tar.gz
 $ tar -xzvf emboss-latest.tar.gz
 $ cd EMBOSS-6.6.0
 ##change PATH by your path (check using pwd)
-$ ./configure --prefix=/PATH --libdir=/PATH/software
+$ ./configure --prefix=/PATH
 $ make -j 4 
 $ make install
 done
 
 ##Amplicon pipeline
+in the parent directory (if in software folder then cd ..)
 $ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
 done
 
 ##PR2 for taxonomic assignment
+$ cd Amplicon_MiSeq_V4
 $ mkdir db_v4
 $ cd db_v4
 $ wget https://github.com/pr2database/pr2database/releases/download/v4.14.0/pr2_version_4.14.0_SSU_UTAX.fasta.gz
