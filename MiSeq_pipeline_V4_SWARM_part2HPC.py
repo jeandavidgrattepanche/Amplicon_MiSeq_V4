@@ -27,8 +27,8 @@ duplicatelist = []
 
 
 def makesinglefastafile(file, Qlenpath, listsample):
-	print('python3 Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
-	os.system('python3 Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
+	print('python Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
+	os.system('python Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
 	
 def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff): 
 	if not os.path.exists(outputpath + 'OTUs/'): 
@@ -45,18 +45,18 @@ def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff):
 #or 
 	os.system('swarm -f -t 2 -s ' + outputpath + '/OTUs/statSWARM -d '+  str(dSWARM) +' -z ' + outputpath + '/OTUs/dereplicated_seqfile.fas > ' + outputpath + '/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
-	os.system('python3 Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
+	os.system('python Miseq_scripts/3_postSwarm_vHPC.py ' + outputpath + '/OTUs/derepseqfile_output.swarm ' + outputpath + '/OTUs/dereplicated_seqfile.map.txt ' + outputpath + '/OTUs/dereplicated_seqfile.fas')
 	print ("Add read numbers")
-	os.system('python3 Miseq_scripts/4_Add_numbers_vHPC.py ' + outputpath + '/OTUs/SWARM_postout.fas ' + outputpath + '/OTUs/SWARM_postout.txt '+listsample)# +' '+ dataname) #  '+ str(runref))
+	os.system('python Miseq_scripts/4_Add_numbers_vHPC.py ' + outputpath + '/OTUs/SWARM_postout.fas ' + outputpath + '/OTUs/SWARM_postout.txt '+listsample)# +' '+ dataname) #  '+ str(runref))
 	print("Prepare files for Chimeras check")
 	if not os.path.exists(outputpath + 'chimeras/'): 
 		os.makedirs(outputpath + 'chimeras/') 	
-	print('python3 Miseq_scripts/5a_Pre_Uchime_vHPC2.py ' , outputpath , '/OTUs/SWARM_postout_nosingleton.fas ' , outputpath , '/OTUs/OTUtable_temp.txt ',str(readcutoff))
-	os.system('python3 Miseq_scripts/5a_Pre_Uchime_vHPC2.py ' + outputpath + '/OTUs/SWARM_postout_nosingleton.fas ' + outputpath + '/OTUs/OTUtable_temp.txt '+str(readcutoff))
+	print('python Miseq_scripts/5a_Pre_Uchime_vHPC2.py ' , outputpath , '/OTUs/SWARM_postout_nosingleton.fas ' , outputpath , '/OTUs/OTUtable_temp.txt ',str(readcutoff))
+	os.system('python Miseq_scripts/5a_Pre_Uchime_vHPC2.py ' + outputpath + '/OTUs/SWARM_postout_nosingleton.fas ' + outputpath + '/OTUs/OTUtable_temp.txt '+str(readcutoff))
 	print("Chimera check using uchime_denovo implemented in vsearch")
 	os.system('vsearch --uchime3_denovo ' + outputpath + '/chimeras/Seq_reads_test.fas --nonchimera ' + outputpath + '/chimeras/Seq_reads_nochimera_nosingleton.fas --uchimeout ' + outputpath + '/chimeras/chimeratable.txt')
-	os.system('python3 Miseq_scripts/5b_Post_Uchime_vHPC.py ' + outputpath + '/chimeras/Seq_reads_test.fas')
-	os.system('python3 Miseq_scripts/5c_Water_remove_contaminant_vHPC.py ' + outputpath + '/chimeras/Seq_reads_nochimera_nosingleton_renamed.fas')
+	os.system('python Miseq_scripts/5b_Post_Uchime_vHPC.py ' + outputpath + '/chimeras/Seq_reads_test.fas')
+	os.system('python Miseq_scripts/5c_Water_remove_contaminant_vHPC.py ' + outputpath + '/chimeras/Seq_reads_nochimera_nosingleton_renamed.fas')
 	
 def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 	if AssTaxo == 0:
@@ -67,7 +67,7 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 		if not os.path.exists(outputpath + 'taxonomic_assignment/'): 
 			os.makedirs(outputpath + 'taxonomic_assignment/') 
 		print("Run BLAST")
-		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py '+outputpath +'chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
+		os.system('python Miseq_scripts/6_BLASTn_Vsearch.py '+outputpath +'chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
 #		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
 	if not os.path.exists(outputpath + 'outgroup_removal/'): 
 		os.makedirs(outputpath + 'outgroup_removal/') 
@@ -78,7 +78,7 @@ def makealignment(AssTaxo, outputpath):
 		os.makedirs(outputpath + 'outgroup_removal/') 
 	if AssTaxo == 1:
 		os.system('mafft --addfragments ' + outputpath + '/taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta --thread 10 --reorder --mapout db/SSU_Euk_PR2plus_V16_ridcluster80_aln.fasta > ' + outputpath + '/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA.fasta')
-		os.system('python3 Miseq_scripts/7_remove_column.py ' + outputpath + '/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA.fasta fasta SAR_db/SSU_SAR_EUK_v14.3_mask_75.txt')
+		os.system('python Miseq_scripts/7_remove_column.py ' + outputpath + '/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA.fasta fasta SAR_db/SSU_SAR_EUK_v14.3_mask_75.txt')
 		print("Now, you have to make a tree using this alignment (OTUseq_TA.fasta in outgroup_removal folder) and a constraint tree (in SAR_db folder)")
 		print("commandline for tree builidng")
 		print("raxmlHPC-PTHREADS-AVX2 -f v -s <alignment> -m GTRGAMMAI -t <constraint tree> -n <name of the output> -T 10")
