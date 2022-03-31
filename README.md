@@ -9,7 +9,7 @@ This repository contains scripts and use PR2 database to analyse MiSeq data for 
 
 A whole pipeline (scripts and folders structure) for MiSeq analysis.
 
-Prepare your data and folders (see **Examplefiles**):
+Prepare your data and folders (see **ExampleFile**):
 
 0- keep the same folders and files structure from the repository or the scripts will crash!
 
@@ -18,7 +18,7 @@ Prepare your data and folders (see **Examplefiles**):
 
 You can use the script movefile.py to create this folder
 	
-=> check example files for an example
+=> check ExampleFile for an example
 
 2- Create a file with your sample code and sample name (there should be a file named List_samples.txt containing: RWS## (tab) samplename ) \n '
 
@@ -30,7 +30,7 @@ example of list:
 		HTS2	test2	
 		HTS3	test3
 
-Note: the first element is a part of name of the file generated from HTS and the second is the name you want the sample to be labelled => check example files for an example
+Note: the first element is a part of name of the file generated from HTS and the second is the name you want the sample to be labelled => check ExampleFile for an example
 	
 3- Copy the script folder, the 3 scripts named MiSeq_pipeline_V4_SWARM_part(1,2 and 3)_HPC.py from this repository and add all in the folder where you save the List_samples.txt and the rawdata folder (suggestion MiSeq_folder).
 
@@ -68,7 +68,7 @@ More descriptions are available in Guide_MiSeqPipeline_2018.txt (not up to date 
 An undergraduate proofread guide can be shared on request.
 
 # Run on Temple server
-Check the Install.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
+Check the ToInstall.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
 
 ```
 $ module load python/3.x.x (python you use to install biopython and other software)
