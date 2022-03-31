@@ -27,9 +27,11 @@ create the working folder bbmap. done
 
 ## install SWARM
 $ cd software
-$ git clone https://github.com/torognes/swarm.git
-$ cd swarm/
+$ wget https://github.com/torognes/swarm/archive/refs/tags/v3.1.0.tar.gz
+$ tar xzvf v3.1.0.tar.gz
+$ cd swarm-3.1.0/
 $ make
+$ cp bin/swarm ../../bin/
 $ swarm --version 
 ```
 Swarm 3.1.0
