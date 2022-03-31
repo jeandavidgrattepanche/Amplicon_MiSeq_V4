@@ -93,6 +93,7 @@ SWARM_sample.txt
 $ python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 **working in the last part of the pipeline to reomve outgroup based on tree or to skip this step and produce the final table.**
+okay when subsampling but not when skipped
 ```
 $ python3 MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
