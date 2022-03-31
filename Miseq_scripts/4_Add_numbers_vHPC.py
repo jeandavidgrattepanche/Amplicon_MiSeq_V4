@@ -28,7 +28,7 @@ def countread(seqfile,otufile,samplelist) :
 		allread = []; occlist = []; abundance = []; readnumber= 0; r34=0
 		for read in line.split('\t'  )[1:]:
 			samplename = ('_').join(read.replace(' ','').split('_')[:-1])
-			print(samplename)
+#			print(samplename)
 			if samplename in samplelist:
 				toadd= samplename + ' ,'
 				allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
