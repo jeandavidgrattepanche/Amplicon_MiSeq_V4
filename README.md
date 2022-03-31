@@ -107,8 +107,8 @@ SWARM_sample.txt
 
 
 ```
-$ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/RawData/
+$ python3 MiSeq_pipeline_V4_SWARM_part2.py ExampleFile/List_samples.txt ExampleFile/RawData/
 ```
-
+**working in the last part of the pipeline to reomve outgroup based on tree or to skip this step and produce the final table.**
 
 
