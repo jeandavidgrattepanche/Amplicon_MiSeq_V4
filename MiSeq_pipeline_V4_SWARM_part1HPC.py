@@ -59,7 +59,7 @@ def main():
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
-	for i in range(1,97):
+	for i in range(1,4):
 		print(i)
 		if i < 10:
 			sample="RWS000"+str(i) #RWS should match the beginning of your sample or update the line
@@ -78,7 +78,7 @@ def main():
 						for linec in open(mergepath+sample+"_merge.fastq",'r'):
 							if linec.startswith('@'):
 								numrawreads += 1
-						os.system("vsearch --derep_fulllength "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
+						os.system("vsearch --fastx_uniques "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --fastaout "+derepApath+sample+"_derepA.fasta")
 						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
 						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
@@ -98,7 +98,7 @@ def main():
 			sample="RWS00"+str(i) #RWS should match the beginning of your sample or update the line
 			print(sample)
 			for rawfile in os.listdir(pathA):
-				print(rawfile,pathA)
+# 				print(rawfile,pathA)
 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
 					if "R1" in rawfile:
