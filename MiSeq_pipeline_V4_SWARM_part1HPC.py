@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
-# python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFile/RawData/
+# python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
 # then reply to prompts (read guide before)
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###

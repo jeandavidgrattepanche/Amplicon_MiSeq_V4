@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFile/List_samples.txt ExampleFile/RawData/
+# python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 # then reply to prompts (read guide before)
 
 
