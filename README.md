@@ -70,6 +70,7 @@ An undergraduate proofread guide can be shared on request.
 # Run on Temple server
 Check the ToInstall.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
 
+To run the pipeline on Compute:
 ```
 $ module load python/3.x.x (python you used to install biopython and other softwares)
 $ module load java
@@ -93,7 +94,7 @@ SWARM_sample.txt
 $ python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 **working in the last part of the pipeline to reomve outgroup based on tree or to skip this step and produce the final table.**
-okay when subsampling but not when skipped
+okay when subsampling but not when the subsampling step is skipped
 ```
 $ python3 MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
