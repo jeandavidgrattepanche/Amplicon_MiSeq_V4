@@ -9,70 +9,52 @@ This repository contains scripts and use PR2 database to analyse MiSeq data for 
 
 A whole pipeline (scripts and folders structure) for MiSeq analysis.
 
-Prepare your data and folders:
+Prepare your data and folders (see **Examplefiles**):
 
 0- keep the same folders and files structure from the repository or the scripts will crash!
 
 1- Create a folder named Rawdata with all your MiSeq sequence files (e.g. HTS1_test1_S1_L001_R1.fastq.gz, HTS1_test1_S1_L001_R2.fastq.gz)
 
-	You can use the script movefile.py to create this folder
+
+You can use the script movefile.py to create this folder
+	
+=> check example files for an example
 
 2- Create a file with your sample code and sample name (there should be a file named List_samples.txt containing: RWS## (tab) samplename ) \n '
 
-	You can use excel to create this file and save as a Tab Delimited Text (.txt) file
-	
-	example of list: 
+You can use excel to create this file and save as a Tab Delimited Text (.txt) file
 
-		HTS1	test1
-	
-		HTS2	test2
-	
+example of list: 
+
+		HTS1	test1	
+		HTS2	test2	
 		HTS3	test3
 
-Note: the first element is a part of name of the file generated from HTS and the second is the name you want the sample to be labelled
+Note: the first element is a part of name of the file generated from HTS and the second is the name you want the sample to be labelled => check example files for an example
 	
 3- Copy the script folder, the 3 scripts named MiSeq_pipeline_V4_SWARM_part(1,2 and 3)_HPC.py from this repository and add all in the folder where you save the List_samples.txt and the rawdata folder (suggestion MiSeq_folder).
 
 (facultative) 4- primer file should be in the db folder (with the PR2 UTAX.fasta). Add a fasta file with your primers such as: 
 
 	'>'V4_f
-	
 	CCAGCASCYGCGGTAATTCC
-	
 	'>'V4.1_f
-	
 	CCAGCAGCCGCGGTAATTCC
-	
 	'>'V4.2_f
-	
 	CCAGCAGCTGCGGTAATTCC
-	
 	'>'V4.3_f
-	
 	CCAGCACCCGCGGTAATTCC
-	
 	'>'V4.4_f
-	
 	CCAGCACCTGCGGTAATTCC
-	
 	'>'V4_r
-	
 	ACTTTCGTTCTTGATYRA
-	
 	'>'V4.1_r
-	
 	ACTTTCGTTCTTGATCAA
-	
 	'>'V4.2_r
-	
 	ACTTTCGTTCTTGATTAA
-
-	'>'V4.3_r
-	
-	ACTTTCGTTCTTGATCGA
-	
-	'>'V4.4_r
-	
+	'>'V4.3_r	
+	ACTTTCGTTCTTGATCGA	
+	'>'V4.4_r	
 	ACTTTCGTTCTTGATTGA
 	
 	
@@ -85,7 +67,8 @@ More descriptions are available in Guide_MiSeqPipeline_2018.txt (not up to date 
 
 An undergraduate proofread guide can be shared on request.
 
-#Run on Temple server
+# Run on Temple server
+Check the Install.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
 
 ```
 $ module load python/3.x.x (python you use to install biopython and other software)
