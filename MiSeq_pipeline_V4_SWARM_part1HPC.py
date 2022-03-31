@@ -79,7 +79,7 @@ def main():
 							if linec.startswith('@'):
 								numrawreads += 1
 						os.system("vsearch --derep_fulllength "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
-						os.system("python3 script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
 						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
 						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
@@ -110,7 +110,7 @@ def main():
 							if linec.startswith('@'):
 								numrawreads += 1
 						os.system("vsearch --derep_fulllength "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
-						os.system("python3 script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
 						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
 						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
