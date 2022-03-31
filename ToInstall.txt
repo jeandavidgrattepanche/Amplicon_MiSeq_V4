@@ -30,6 +30,10 @@ $ cd software
 $ git clone https://github.com/torognes/swarm.git
 $ cd swarm/
 $ make
+$ swarm --version 
+```
+Swarm 3.1.0
+```
 done
 
 ## vsearch 
@@ -42,6 +46,11 @@ $ ./autogen.sh
 $ ./configure CFLAGS="-O3" CXXFLAGS="-O3" --prefix=/PATH
 $ make
 $ make install
+$ cp /bin/vsearch ../../bin/
+$ vsearch --version
+```
+vsearch v2.21.1_linux_x86_64
+```
 done
 
 ## MAFFT
@@ -56,6 +65,11 @@ press esc and type :wq
 $ make clean
 $ make
 $ make install
+$ cp /bin/mafft ../../bin/
+$ mafft --version
+```
+v7.490 (2021/Oct/30)
+```
 done
 
 ## RAxML
@@ -63,6 +77,7 @@ $ cd software
 $ git clone https://github.com/stamatak/standard-RAxML.git
 $ cd standard-RAxML/
 $ make -f Makefile.AVX2.PTHREADS.gcc
+$ cp raxmlHPC-PTHREADS-AVX2 ../../bin/
 done
 
 ## EMBOSS 
