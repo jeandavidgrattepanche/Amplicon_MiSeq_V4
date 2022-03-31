@@ -21,10 +21,11 @@ def countread(seqfile, readmap,samplelist):
 	outlog = open('readpersample_cleaned.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
 	print(folder)
+	maxread = 0
 	for sample in open(samplelist,'r'):
 		samples.append(sample.replace('_','-').split('\t')[1].split('\n')[0])
 		listreaddict.setdefault(sample.replace('_','-').split('\t')[1].split('\n')[0], [])
-		readnumber= 0
+		readnumber= 0 
 		for line in open(readmap,'r'):
 			OTUID = line.split('\t')[0]
 			if OTUID in tokeep:
@@ -39,6 +40,9 @@ def countread(seqfile, readmap,samplelist):
 
 		readpersamplesdict[sample.replace('_','-').split('\t')[1].split('\n')[0]] = str(readnumber)
 		print(sample.replace('_','-').split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
+		if readnumber > maxread:
+			maxread = readnumber
+			print(maxread)
 		outlog = open('readpersample_cleaned.txt','a')
 		outlog.write( sample.replace('_','-').split('\t')[1].split('\n')[0]+ "\t"+ str(readnumber)+'\n')
 		outlog.close()
@@ -59,7 +63,8 @@ def countread(seqfile, readmap,samplelist):
 		else:
 			randomnum = int(j)
 	elif search[0] == 'n':
-		randomnum = 0
+		randomnum = maxread
+		print(randomnum)
 	else:
 		print ('Please answer yes or no. ')
 		main()
