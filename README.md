@@ -79,7 +79,7 @@ $ conda activate my_env
 OR
 $ module load python/3.x.x (python you used to install biopython and other softwares)
 
-$ python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
+$ python MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
 ```
 
 Results for the 4 samples attached to this pipeline:
@@ -96,12 +96,12 @@ SWARM_sample.txt
 
 
 ```
-$ python3 MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
+$ python MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 **working in the last part of the pipeline to reomve outgroup based on tree or to skip this step and produce the final table.**
 okay when subsampling but not when the subsampling step is skipped
 ```
-$ python3 MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
+$ python MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
 
