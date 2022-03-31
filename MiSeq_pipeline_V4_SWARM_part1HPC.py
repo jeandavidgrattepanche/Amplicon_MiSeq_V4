@@ -59,7 +59,7 @@ def main():
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
-	for i in range(1,4):
+	for i in range(1,5):
 		print(i)
 		if i < 10:
 			sample="RWS000"+str(i) #RWS should match the beginning of your sample or update the line
