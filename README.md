@@ -71,7 +71,7 @@ An undergraduate proofread guide can be shared on request.
 Check the ToInstall.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
 
 ```
-$ module load python/3.x.x (python you use to install biopython and other software)
+$ module load python/3.x.x (python you used to install biopython and other softwares)
 $ module load java
 $ python3 MiSeq_pipeline_V4_SWARM_part1.py ExampleFile/RawData/
 ```
