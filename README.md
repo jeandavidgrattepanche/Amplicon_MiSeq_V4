@@ -104,4 +104,4 @@ okay when subsampling but not when the subsampling step is skipped
 $ python MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
-**working in the first part of the pipeline to handle file with different naming (current naming accepted is three letters and a four digit number).**
+**working in the first part of the pipeline to handle file with different naming (current naming accepted is three letters and a four digit number + _S# + FWD read file should includes R1 and REV should include R2 +.fastq.gz).**
