@@ -97,10 +97,7 @@ SWARM_sample.txt
 
 ```
 $ python MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
-```
 
-okay when subsampling but not when the subsampling step is skipped
-```
 $ python MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
