@@ -27,7 +27,7 @@ duplicatelist = []
 
 
 def makesinglefastafile(file, Qlenpath, listsample):
-	print('python Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
+#	print('python Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
 	os.system('python Miseq_scripts/1_pool_rename_vHPC.py ' + Qlenpath +file +' '+ listsample)			# pool all the reads together in a huge file
 	
 def PickOTUSwarm(dSWARM , Qlenpath, outputpath, listsample, readcutoff): 
@@ -187,6 +187,10 @@ def main():
 	
 # 	filnum = 1 # heading in listsample
 	filnum = 0 # if rerun without 1_readpool
+	for file in os.listdir(Qlenpath):
+		if file == "readpooled.fas":
+			os.system("rm "+Qlenpath+"/"+file)
+			print("previous ",file," removed")
 	for file in os.listdir(Qlenpath):
 		if ".fas" in file:
 			filnum += 1

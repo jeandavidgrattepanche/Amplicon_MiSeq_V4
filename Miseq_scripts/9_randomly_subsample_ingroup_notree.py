@@ -30,7 +30,7 @@ def countread(seqfile, readmap,samplelist):
 			OTUID = line.split('\t')[0]
 			if OTUID in tokeep:
 				for read in line.split('\t'  )[1:]:
-					samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[0:3])
+					samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
 		# 				print(samplename)
 					if samplename == sample.replace('_','-').split('\t')[1].split('\n')[0]:
 						readnumber=readnumber + 1

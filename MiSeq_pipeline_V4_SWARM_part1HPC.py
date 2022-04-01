@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # this script will assemble your MiSeq PE read using bbmap and vsearch toolkits
-# python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
+# python3 MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 # then reply to prompts (read guide before)
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
@@ -21,7 +21,20 @@ from Bio import SeqIO
 from sys import argv
 	
 def main():
-	folderraw = sys.argv[1]
+	samplefile = sys.argv[1]
+	listsamp = []
+	try:
+		listsample = samplefile
+	except ValueError:
+		samplefile = ""	
+	if samplefile == "":
+		print ('Your input samplefile is empty.  Try again. ')
+	for samp in open(listsample,'r'):
+		if samp.split('\t')[0] not in listsamp:
+			listsamp.append(samp.split('\t')[0])
+
+
+	folderraw = sys.argv[2]
 	pathA = os.getcwd()+"/"+ folderraw #where your folder are located
 	bbmappath = os.path.abspath(os.path.join(os.getcwd(), '..')) +"/software/bbmap/" #where bbmap is installed
 	os.path.abspath(os.path.join(os.getcwd(), '..'))
@@ -59,74 +72,137 @@ def main():
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
-	##need to modify this part to be able to run with random samples (not same starting name)
-	for i in range(1,5):
-		print(i)
-		if i < 10:
-			sample="RWS000"+str(i) #RWS should match the beginning of your sample or update the line
-			print(sample)
-			for rawfile in os.listdir(pathA):
+	for sample in listsamp:
+		print(sample)
+		for rawfile in os.listdir(pathA):
 # 				print(rawfile,pathA)
-				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
-				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
-					if "R1" in rawfile:
-						FWD_reads=pathA+rawfile
-						try: 
-							REV_reads=pathA+rawfile.replace("R1","R2")
-						except:
-							REV_reads=pathA+rawfile.replace("1.fastq","2.fastq")
-#						print(FWD_reads,REV_reads)
-						print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
-						os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
-						# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
-						for linec in open(mergepath+sample+"_merge.fastq",'r'):
-							if linec.startswith('@'):
-								numrawreads += 1
-						os.system("vsearch --fastx_uniques "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --fastaout "+derepApath+sample+"_derepA.fasta")
-						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
-						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
-						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
-						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
-						num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
-						for line2 in open(statSWARMpath+sample +".Stat",'r'):
-							num_reads += int(line2.split('\t')[1])
-							numUreads += int(line2.split('\t')[0])
-							if int(line2.split('\t')[1]) > 9:
-								SWARMnr += 1
-							if int(line2.split('\t')[1]) > 99:
-								SWARMnr2 += 1
-						resultfile = open("SWARM_sample.txt","a") 
-						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
-						resultfile.close()
-		else:
-			sample="RWS00"+str(i) #RWS should match the beginning of your sample or update the line
-			print(sample)
-			for rawfile in os.listdir(pathA):
-# 				print(rawfile,pathA)
-				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
-				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
-					if "R1" in rawfile:
-						FWD_reads=pathA+rawfile
-						REV_reads=pathA+rawfile.replace("R1","R2")
-						print(FWD_reads,REV_reads)
-						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
-						for linec in open(mergepath+sample+"_merge.fastq",'r'):
-							if linec.startswith('@'):
-								numrawreads += 1
-						os.system("vsearch --derep_fulllength "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
-						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
-						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
-						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
-						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
-						num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
-						for line2 in open(statSWARMpath+sample +".Stat",'r'):
-							num_reads += int(line2.split('\t')[1])
-							numUreads += int(line2.split('\t')[0])
-							if int(line2.split('\t')[1]) > 9:
-								SWARMnr += 1
-							if int(line2.split('\t')[1]) > 99:
-								SWARMnr2 += 1
-						resultfile = open("SWARM_sample.txt","a") 
-						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
-						resultfile.close()
+			num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
+			if rawfile.startswith(sample) and rawfile.endswith(".fastq.gz"):
+				if "R1_" in rawfile:
+					FWD_reads=pathA+rawfile
+					REV_reads=pathA+rawfile.replace("R1","R2")
+# 					print(FWD_reads,REV_reads)
+# 					print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+					os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
+					# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
+					for linec in open(mergepath+sample+"_merge.fastq",'r'):
+						if linec.startswith('@'):
+							numrawreads += 1
+					os.system("vsearch --fastx_uniques "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --fastaout "+derepApath+sample+"_derepA.fasta")
+					os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+					os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
+					os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
+					os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
+					num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
+					for line2 in open(statSWARMpath+sample +".Stat",'r'):
+						num_reads += int(line2.split('\t')[1])
+						numUreads += int(line2.split('\t')[0])
+						if int(line2.split('\t')[1]) > 9:
+							SWARMnr += 1
+						if int(line2.split('\t')[1]) > 99:
+							SWARMnr2 += 1
+					resultfile = open("SWARM_sample.txt","a") 
+					resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
+					resultfile.close()
+				elif "_1.fastq" in rawfile:
+					FWD_reads=pathA+rawfile
+					REV_reads=pathA+rawfile.replace("_1.fastq","_2.fastq")
+# 					print(FWD_reads,REV_reads)
+# 					print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+					os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
+					# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
+					for linec in open(mergepath+sample+"_merge.fastq",'r'):
+						if linec.startswith('@'):
+							numrawreads += 1
+					os.system("vsearch --fastx_uniques "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --fastaout "+derepApath+sample+"_derepA.fasta")
+					os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+					os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
+					os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
+					os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
+					num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
+					for line2 in open(statSWARMpath+sample +".Stat",'r'):
+						num_reads += int(line2.split('\t')[1])
+						numUreads += int(line2.split('\t')[0])
+						if int(line2.split('\t')[1]) > 9:
+							SWARMnr += 1
+						if int(line2.split('\t')[1]) > 99:
+							SWARMnr2 += 1
+					resultfile = open("SWARM_sample.txt","a") 
+					resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
+					resultfile.close()
+				else:
+					print(rawfile, "Not a FWD file")
 main()
+
+
+	##need to modify this part to be able to run with random samples (not same starting name)
+##old version
+# 	for i in range(1,5):
+# 		print(i)
+# 		if i < 10:
+# 			sample="RWS000"+str(i) #RWS should match the beginning of your sample or update the line
+# 			print(sample)
+# 			for rawfile in os.listdir(pathA):
+# # 				print(rawfile,pathA)
+# 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
+# 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
+# 					if "R1" in rawfile:
+# 						FWD_reads=pathA+rawfile
+# 						try: 
+# 							REV_reads=pathA+rawfile.replace("R1","R2")
+# 						except:
+# 							REV_reads=pathA+rawfile.replace("1.fastq","2.fastq")
+# #						print(FWD_reads,REV_reads)
+# 						print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+# 						os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
+# 						# ecct = error correction by Kmer, extend2 = length to add after failed merging, iterations = number of failed allowed. loose = strictness ( from strict to ultraloose and fast)
+# 						for linec in open(mergepath+sample+"_merge.fastq",'r'):
+# 							if linec.startswith('@'):
+# 								numrawreads += 1
+# 						os.system("vsearch --fastx_uniques "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --fastaout "+derepApath+sample+"_derepA.fasta")
+# 						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+# 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
+# 						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
+# 						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
+# 						num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
+# 						for line2 in open(statSWARMpath+sample +".Stat",'r'):
+# 							num_reads += int(line2.split('\t')[1])
+# 							numUreads += int(line2.split('\t')[0])
+# 							if int(line2.split('\t')[1]) > 9:
+# 								SWARMnr += 1
+# 							if int(line2.split('\t')[1]) > 99:
+# 								SWARMnr2 += 1
+# 						resultfile = open("SWARM_sample.txt","a") 
+# 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
+# 						resultfile.close()
+# 		else:
+# 			sample="RWS00"+str(i) #RWS should match the beginning of your sample or update the line
+# 			print(sample)
+# 			for rawfile in os.listdir(pathA):
+# # 				print(rawfile,pathA)
+# 				num_SWARM=0;num_reads=0;numUreads=0;numrawreads=0;SWARMnr=0;SWARMnr2=0
+# 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
+# 					if "R1" in rawfile:
+# 						FWD_reads=pathA+rawfile
+# 						REV_reads=pathA+rawfile.replace("R1","R2")
+# 						print(FWD_reads,REV_reads)
+# 						os.system(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
+# 						for linec in open(mergepath+sample+"_merge.fastq",'r'):
+# 							if linec.startswith('@'):
+# 								numrawreads += 1
+# 						os.system("vsearch --derep_fulllength "+mergepath+sample+"_merge.fastq --sizeout --fasta_width 0 --output "+derepApath+sample+"_derepA.fasta")
+# 						os.system("python script/ext_remove_N_in_seqfile_v2.py "+derepApath+sample+"_derepA.fasta")
+# 						os.system("vsearch --derep_fulllength "+derepApath+sample+"_derepA_noN.fas --sizein --sizeout --fasta_width 0 --output "+derepBpath+sample+"_derepB.fasta")
+# 						os.system("sh "+bbmappath+"bbduk.sh in="+derepBpath+sample+"_derepB.fasta out="+Qlenpath+sample+"_Qlen.fasta minlen=400")
+# 						os.system("swarm -s "+statSWARMpath+sample +".Stat -d 1 -z "+Qlenpath+sample+"_Qlen.fasta > "+SWARMpath+sample+".swarm")
+# 						num_SWARM = sum(1 for linev in open(statSWARMpath+sample +".Stat"))
+# 						for line2 in open(statSWARMpath+sample +".Stat",'r'):
+# 							num_reads += int(line2.split('\t')[1])
+# 							numUreads += int(line2.split('\t')[0])
+# 							if int(line2.split('\t')[1]) > 9:
+# 								SWARMnr += 1
+# 							if int(line2.split('\t')[1]) > 99:
+# 								SWARMnr2 += 1
+# 						resultfile = open("SWARM_sample.txt","a") 
+# 						resultfile.write(sample+'\t'+ str(numrawreads)+'\t'+str(num_reads)+'\t'+str(numUreads)+'\t'+str(num_SWARM)+'\t'+str(SWARMnr)+'\t'+str(SWARMnr2)+'\n')
+# 						resultfile.close()

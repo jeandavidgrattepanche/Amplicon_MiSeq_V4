@@ -75,11 +75,11 @@ To run the pipeline on Compute:
 $ cd Amplicon_MiSeq_V4/
 $ module load java
 
-$ conda activate my_env
+$ conda activate /home/tuxxx/miniconda3/envs/my_env
 OR
 $ module load python/3.x.x (python you used to install biopython and other softwares)
 
-$ python MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/RawData/
+$ python MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
 Results for the 4 samples attached to this pipeline:

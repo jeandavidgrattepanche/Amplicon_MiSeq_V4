@@ -39,7 +39,7 @@ def countread(seqfile,otufile,samplelist) :
 				print("ERROR in list")
 		occurrence = len(occlist)
 		totalread = len(allread)
-		print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, "or", int(r34), " reads.") 
+		print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, "or", int(r34), " reads.", end='',flush=True) 
 		if totalread != r34:
 			break
 		if totalread > 1:
