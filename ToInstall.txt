@@ -103,6 +103,10 @@ $ fast-dump --version
 ```
 "fastq-dump" version 2.11.2
 ```
+This command will download the SRA file SRR18042573 and save it the forward (.1) and reverse (.2) file in fastq.gz format 
+$ fastq-dump --split-files --gzip SRR18042573
+
+
 
 ##Amplicon pipeline
 in the parent directory (if in software folder then cd ..)
