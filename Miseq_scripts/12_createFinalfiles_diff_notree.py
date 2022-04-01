@@ -20,15 +20,18 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 
 	for record in open(BLASTtsv,'r'):
 #		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
-		BLASTresult = record.split('\t')[1].split('tax=')[1]
-		Accession = record.split('\t')[1].split('.')[0]
-		percid = record.split('\t')[2]
-		Evalue = "na"
-#		print(BLASTresult); print(Accession); print(percid);print(Evalue)
-		BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
-		print(record.split('_')[0],'\t',BLASTresults)
+		if 'tax=' in record:
+			BLASTresult = record.split('\t')[1].split('tax=')[1]
+			Accession = record.split('\t')[1].split('.')[0]
+			percid = record.split('\t')[2]
+			Evalue = "na"
+		#		print(BLASTresult); print(Accession); print(percid);print(Evalue)
+			BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
+		else:
+			BLASTresults = "unassigned;na;na;na;na;na;na;na"
+		print(record.split('_')[0],'\t',BLASTresults, flush=True,end="\r")
 		BLAST[record.split('_')[0]] = BLASTresults
-		
+	print("\n\n Taxonomy assignemt added to the OTU table \n\n")	
 	outfile = open(outpath+'/OTUs_ingroup/OTUtable_ingroup.txt','w')
 	outfile.write('OTU\tBtaxo_rank1\tBtaxo_rank2\tBtaxo_rank3\tBtaxo_rank4\tBsp\tBacc_number\tid%\tEvalue\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
 	outfile.close()
@@ -42,7 +45,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 			abundance = []
 			readnumber= 0
 			for read in line.split('\n')[0].split('\t'  )[1:]:
-				samplename = ('-').join(read.replace(" ","").replace('"',"").replace('"','').split('_')[0:3])
+				samplename = ('-').join(read.replace(" ","").replace('"',"").replace('"','').split('_')[:-1])
 				if samplename in samplelist:
 					allread.append(samplename)
 					if samplename not in occlist:
@@ -51,7 +54,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 					print("ERROR in list", samplename)
 			occurrence = len(occlist)
 			totalread = len(allread)
-			print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, " reads.") 
+			print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, " reads.",flush=True, end='\r') 
 			if totalread > 0:
 				if occurrence > 0:
 	
@@ -76,6 +79,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 		else:
 			print(OTUID," was removed in previous step")
 	
+	print("\n\n Final OTU table Done \n\n")	
 				
 		
 	
