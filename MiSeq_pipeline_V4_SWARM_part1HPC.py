@@ -71,7 +71,10 @@ def main():
 				if rawfile.startswith(sample+'_S') and rawfile.endswith(".fastq.gz"):
 					if "R1" in rawfile:
 						FWD_reads=pathA+rawfile
-						REV_reads=pathA+rawfile.replace("R1","R2")
+						try: 
+							REV_reads=pathA+rawfile.replace("R1","R2")
+						except:
+							REV_reads=pathA+rawfile.replace("1.fastq","2.fastq")
 #						print(FWD_reads,REV_reads)
 						print(bbmappath+"bbmerge-auto.sh in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq outu="+unmergepath+sample+"_unmerge.fastq  ihist="+histpath+sample+"_ihist.txt ecct extend2=150 loose iterations=5")
 						os.system(bbmappath+"bbmerge-auto.sh ecct extend2=150 loose iterations=5 in1="+FWD_reads+" in2="+REV_reads+" out="+mergepath+sample+"_merge.fastq")# outu="+unmergepath+sample+"_unmerge.fastq ihist="+histpath+sample+"_ihist.txt")
