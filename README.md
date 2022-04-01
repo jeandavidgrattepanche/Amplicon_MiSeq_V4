@@ -101,4 +101,5 @@ $ python MiSeq_pipeline_V4_SWARM_part2HPC.py ExampleFiles/List_samples.txt Examp
 $ python MiSeq_pipeline_V4_SWARM_part3HPC_noTree.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
-**working on the first part of the pipeline to handle files with different naming => currently the naming accepted is three letters and a four digit number + _S# + FWD read file should includes R1 and REV should include R2 +.fastq.gz**
+**working on the first part of the pipeline to handle files with different naming => currently the naming accepted is three letters and a four digit number + _S + FWD read files should include R1 and REV should include R2 +.fastq.gz**
+example: RWS0001_S1_L01_R1_001.fastq.gz 

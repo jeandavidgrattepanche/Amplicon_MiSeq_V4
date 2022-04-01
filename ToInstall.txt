@@ -93,6 +93,17 @@ $ make -j 4
 $ make install
 done
 
+##SRA toolkit (can be useful for downloading SRA data)
+$ cd software
+$ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+$ tar xzvf sratoolkit.current-ubuntu64.tar.gz
+$ export PATH=$PATH/:$PWD/sratoolkit.2.11.2-ubuntu64/bin
+$ fast-dump --version
+
+```
+"fastq-dump" version 2.11.2
+```
+
 ##Amplicon pipeline
 in the parent directory (if in software folder then cd ..)
 $ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
@@ -104,5 +115,6 @@ $ mkdir db_v4
 $ cd db_v4
 $ wget https://github.com/pr2database/pr2database/releases/download/v4.14.0/pr2_version_4.14.0_SSU_UTAX.fasta.gz
 $ gzip -d pr2_version_4.14.0_SSU_UTAX.fasta.gz
+
 
 You are now ready to run the pipeline
