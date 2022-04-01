@@ -59,6 +59,7 @@ def main():
 	resultfile.write("Sample\treads\tcleanreads\tuniquereads\tSWARM\tSWARM10\tSWARM100\n")
 	resultfile.close()	
 	os.system("module load java")		
+	##need to modify this part to be able to run with random samples (not same starting name)
 	for i in range(1,5):
 		print(i)
 		if i < 10:
