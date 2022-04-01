@@ -68,7 +68,9 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
 				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
 				outseq.close()
-		
+				outNOBLAST = open(outputpath+'/VsearchBLAST.tsv','a')
+				outNOBLAST.write(seq.id+"\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\n"+)
+				outNOBLAST.close()
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa, readcutoff)
