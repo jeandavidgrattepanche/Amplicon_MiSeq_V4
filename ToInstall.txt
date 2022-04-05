@@ -95,10 +95,10 @@ done
 
 ##SRA toolkit (can be useful for downloading SRA data)
 $ cd software
-$ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
-$ tar xzvf sratoolkit.current-ubuntu64.tar.gz
-$ export PATH=$PATH/:$PWD/sratoolkit.2.11.2-ubuntu64/bin
-$ fast-dump --version
+$ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-centos_linux64.tar.gz
+$ tar xzvf sratoolkit.current-centos_linux64.tar.gz
+$ export PATH=$PATH/:$PWD/sratoolkit.2.11.2-centos_linux64/bin
+$ fastq-dump --version
 
 ```
 "fastq-dump" version 2.11.2
