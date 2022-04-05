@@ -103,8 +103,9 @@ $ fastq-dump --version
 ```
 "fastq-dump" version 2.11.2
 ```
-This command will download the SRA file SRR18042573 and save it the forward (.1) and reverse (.2) file in fastq.gz format 
-$ fastq-dump --split-files --gzip SRR18042573
+This command will download the SRA file SRR18042573 and save it the forward (.1) and reverse (.2) file in fastq.gz format. To Run from the Amplicon Pipeline folder
+$ cd Amplicon_MiSeq_V4 
+$ fastq-dump --split-files --gzip SRR18042573 --outdir $PWD/ExampleFiles/RawData/
 
 
 
