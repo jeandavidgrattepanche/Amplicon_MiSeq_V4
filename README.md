@@ -74,11 +74,26 @@ To run the pipeline on Compute:
 ```
 $ cd Amplicon_MiSeq_V4/
 $ module load java
-
-$ conda activate /home/tuxxx/miniconda3/envs/my_env
-OR
+```
+then
+```
+$ conda activate my_env
+```
+**or**
+```
 $ module load python/3.x.x (python you used to install biopython and other softwares)
+```
+!!if you use tmux, there is an issue with conda. This work-around should solve the issue:!!
 
+```
+$ tmux new -s pipeline
+$ cd Amplicon_MiSeq_V4/
+$ conda deactivate
+$ conda activate my_env
+$ module load java
+```
+Then
+```
 $ python MiSeq_pipeline_V4_SWARM_part1HPC.py ExampleFiles/List_samples.txt ExampleFiles/RawData/
 ```
 
