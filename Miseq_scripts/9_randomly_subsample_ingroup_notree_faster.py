@@ -31,14 +31,16 @@ def countread(seqfile, readmap,samplelist):
 	print(samples)
 	for line in open(readmap,'r'):
 		OTUID = line.split('\t')[0]
-		print('\n',OTUID)
 		if OTUID in tokeep:
+			print('\n',OTUID)
+			s =0 
 			for read in line.split('\t'  )[1:]:
 				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
-				print(samplename,end='\t')
 				if samplename in samples:
-					print("added",end='\t')
+					s+=1
+# 					print(samplename,end='\t')
 					listreaddict[samplename].append(OTUID+";"+read)
+					print(s, end='\r')
 # 			else:
 # 				print(OTUID, ' was removed in previous step')
 
