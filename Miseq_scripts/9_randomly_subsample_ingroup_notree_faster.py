@@ -44,7 +44,7 @@ def countread(seqfile, readmap,samplelist):
 # 			else:
 # 				print(OTUID, ' was removed in previous step')
 
-	readnumber= 0 
+	readnumber= 0 ; samples = []; tokeep = []
 	for sampler in open(samplelist,'r'):
 		readnumber= len(listreaddict[sampler.replace('_','-').split('\t')[1].split('\n')[0]])
 
