@@ -41,7 +41,8 @@ def countread(seqfile, readmap,samplelist, readmax):
 			print('\n',OTUID)
 			s =0 
 			for read in line.split('\t'  )[1:]:
-				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
+# 				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
+				samplename = read.split('_')[0]
 				if samplename in samples:
 					s+=1
 # 					print(samplename,end='\t')
