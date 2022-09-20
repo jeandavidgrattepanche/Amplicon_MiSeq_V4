@@ -15,23 +15,28 @@ from random import randrange
 u=0;samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
 
 def countread(seqfile, readmap,samplelist, readmax): 	
-	u = 0 
+	u = 0 ; t=0; tokeep = []
 	for seq in SeqIO.parse(open(seqfile,'r'),'fasta'):
+		t+=1
 		if int(seq.description.split('size=')[1].split('\n')[0]) >= int(readmax):
 			tokeep.append(seq.id.split('_')[0])
 			u+=1
-			print(int(u), end ='\r')
+		print(f'{u:,}', " of ", f'{t:,}', end ='\r')
 	print('\n\n\n',len(tokeep),'\n\n\n')
 	outlog = open('readpersample_cleaned_test.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
 	print("saving folder: ", folder)
 	maxread = 0
+	samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
 	for sample in open(samplelist,'r'):
 		samples.append(sample.replace('_','-').split('\t')[1].split('\n')[0])
 		listreaddict.setdefault(sample.replace('_','-').split('\t')[1].split('\n')[0], [])
 	print(samples)
+	l=0; 
 	for line in open(readmap,'r'):
 		OTUID = line.split('\t')[0]
+		l+=1
+		print(round((l/t)*100,1),"%",end='\r')
 		if OTUID in tokeep:
 			print('\n',OTUID)
 			s =0 
