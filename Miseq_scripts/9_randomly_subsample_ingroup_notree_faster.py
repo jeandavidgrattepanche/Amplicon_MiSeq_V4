@@ -14,12 +14,13 @@ from random import randrange
 
 u=0;samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
 
-def countread(seqfile, readmap,samplelist): 	
+def countread(seqfile, readmap,samplelist, readmax): 	
 	u = 0 
 	for seq in SeqIO.parse(open(seqfile,'r'),'fasta'):
-		tokeep.append(seq.id.split('_')[0])
-		u+=1
-		print(int(u), end ='\r')
+		if int(seq.description.split('size=')[1].split('\n')[0]) >= int(readmax):
+			tokeep.append(seq.id.split('_')[0])
+			u+=1
+			print(int(u), end ='\r')
 	print('\n\n\n',len(tokeep),'\n\n\n')
 	outlog = open('readpersample_cleaned_test.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
@@ -111,6 +112,6 @@ def countread(seqfile, readmap,samplelist):
 		outfile.close()		
 	
 def main():
-	script, seqfile, otufile, listofsample = argv 
-	countread(seqfile, otufile,listofsample) 
+	script, seqfile, otufile, listofsample, readmax = argv 
+	countread(seqfile, otufile,listofsample, readmax) 
 main()
