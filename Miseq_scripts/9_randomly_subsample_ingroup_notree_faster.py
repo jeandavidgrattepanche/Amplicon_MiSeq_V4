@@ -101,7 +101,7 @@ def countread(seqfile, readmap,samplelist, readmax):
 		if subsamp[0] == 'n':
 			print(samplelistname, "no subsampling")
 			for name in listreaddict[samplelistname]:
-				outfile = open(folder+'/subsampled.txt','a')
+				outfile = open(folder+'/subsampled_test.txt','a')
 				outfile.write(name.replace('\n','').replace(' ','') + '\n')
 		if subsamp[0] == 'y':
 			if int(readpersamplesdict[samplelistname]) >= int(randomnum):
