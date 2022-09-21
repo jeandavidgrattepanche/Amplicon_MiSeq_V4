@@ -21,35 +21,43 @@ def countread(seqfile, readmap,samplelist, readmax):
 		if int(seq.description.split('size=')[1].split('\n')[0]) >= int(readmax):
 			tokeep.append(seq.id.split('_')[0])
 			u+=1
+		#the two following lines are for testing only and should be commented otherwise.
+		if t >= int(100000):
+			break
 		print(f'{u:,}', " of ", f'{t:,}', end ='\r')
 	print('\n\n\n',len(tokeep),'\n\n\n')
 	outlog = open('readpersample_cleaned_test.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
 	print("saving folder: ", folder)
 	maxread = 0
-	samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
+	samples = []; readpersamplesdict= {}; listreaddict= {}
 	for sample in open(samplelist,'r'):
 		samples.append(sample.replace('_','-').split('\t')[1].split('\n')[0])
 		listreaddict.setdefault(sample.replace('_','-').split('\t')[1].split('\n')[0], [])
 	print(samples)
 	l=0; 
 	for line in open(readmap,'r'):
-		OTUID = line.split('\t')[0]
+		OTUID = line.split('\t')[0].replace(' ','')
 		l+=1
-		print(round((l/t)*100,1),"%",end='\r')
-		if OTUID in tokeep:
-			print('\n',OTUID)
+		print(OTUID, round((l/t)*100,1),"%",end='\r')
+		if OTUID in str(tokeep):
+# 			print('\n',OTUID)
 			s =0 
-			for read in line.split('\t'  )[1:]:
+			for read in line.split('\t')[1:]:
 # 				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
-				samplename = read.split('_')[0]
-				if samplename in samples:
+				samplename = read.split('_')[1].split('.')[0]
+# 				print(samplename,end='\t')
+				if samplename in str(samples):
 					s+=1
-# 					print(samplename,end='\t')
 					listreaddict[samplename].append(OTUID+";"+read)
 					print(s, end='\r')
 # 			else:
 # 				print(OTUID, ' was removed in previous step')
+		#the two following lines are for testing only and should be commented otherwise.
+		if OTUID == tokeep[-1]:
+			break
+
+
 
 	readnumber= 0 ; samples = []; tokeep = []
 	for sampler in open(samplelist,'r'):
