@@ -13,24 +13,47 @@ from sys import argv
 
 seqlist = {}; BLAST= {}; TA_tree= {}
 
-def countread(seqfile,BLASTtsv, otufile,samplelist): 	
+def countread(seqfile,BLASTtsv, otufile,samplelist,otulist): 	
 	outpath = ('/').join(BLASTtsv.split('/')[:-1])
 	for Seq in SeqIO.parse(open(seqfile),'fasta'):
-		seqlist[Seq.id.split('_')[0].split('-')[0]] = [Seq.id,str(Seq.seq)]
-
-	for record in open(BLASTtsv,'r'):
-#		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
-		if 'tax=' in record:
-			BLASTresult = record.split('\t')[1].split('tax=')[1]
-			Accession = record.split('\t')[1].split('.')[0]
-			percid = record.split('\t')[2]
-			Evalue = "na"
-		#		print(BLASTresult); print(Accession); print(percid);print(Evalue)
-			BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
-		else:
+		if Seq.id in otulist:
+			seqlist[Seq.id.split('_')[0].split('-')[0]] = [Seq.id,str(Seq.seq)]
+			print("Check sequences ",round((len(seqlist)/len(otulist))*100,1),'% complete', end='\r', flush=True)
+		if int(len(seqlist)/len(otulist)) >= int(1):
+			break
+	for otu in otulist:
+		for record in open(BLASTtsv,'r'):
+			if otu in record:
+				BLASTresult = record.split('\t')[1].split('tax=')[1]
+				Accession = record.split('\t')[1].split('.')[0]
+				percid = record.split('\t')[2]
+				Evalue = "na"
+				BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
+				BLAST[record.split('\t')[0]] = BLASTresults
+				print(record.split('\t')[0], "in BLAST")#'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
+				break
+		if otu not in BLAST:
 			BLASTresults = "unassigned;na;na;na;na;na;na;na"
-		print(record.split('_')[0],'\t',BLASTresults, flush=True,end="\r")
-		BLAST[record.split('_')[0]] = BLASTresults
+			BLAST[otu] = BLASTresults
+			print(otu, " not in BLAST") #,'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
+
+# 	for record in open(BLASTtsv,'r'):
+# #		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]
+# # 		print(record.split('\t')[0])
+# 		if record.split('\t')[0] in otulist:
+# 			if 'tax=' in record:
+# 				BLASTresult = record.split('\t')[1].split('tax=')[1]
+# 				Accession = record.split('\t')[1].split('.')[0]
+# 				percid = record.split('\t')[2]
+# 				Evalue = "na"
+# 			#		print(BLASTresult); print(Accession); print(percid);print(Evalue)
+# 				BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
+# 			else:
+# 				BLASTresults = "unassigned;na;na;na;na;na;na;na"
+# 			print(record.split('\t')[0],'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
+# 			BLAST[record.split('\t')[0]] = BLASTresults
+# 		if int(len(BLAST)/len(otulist)) >= 1:
+# 			break
 	print("\n\n Taxonomy assignemt added to the OTU table \n\n")	
 	outfile = open(outpath+'/OTUs_ingroup/OTUtable_ingroup.txt','w')
 	outfile.write('OTU\tBtaxo_rank1\tBtaxo_rank2\tBtaxo_rank3\tBtaxo_rank4\tBsp\tBacc_number\tid%\tEvalue\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
@@ -85,10 +108,16 @@ def countread(seqfile,BLASTtsv, otufile,samplelist):
 	
 def main():
 	script, seqfile, BLASTtsv, otufile, listofsample = argv #, dataname = argv
-	samplelist= []
+	samplelist= []; otulist= []
 	for sample in open(listofsample,'r'):
 		if sample.split('\n')[0] != "":
 			samplelist.append(sample.replace("_","-").split('\n')[0].split('\t')[1])
-	print(samplelist)
-	countread(seqfile,BLASTtsv, otufile,samplelist) #,dataname)
+			
+	for OTU in open(otufile,'r'):
+		if OTU.split('\n')[0] != "" and OTU.split('\n')[0] not in otulist:
+			otulist.append(OTU.split('\t')[0])
+	print(samplelist,'\nThere is ',len(samplelist),' samples')
+# 	print(otulist,'\nThere is ',len(otulist),' OTUs')
+	print('There is ',len(otulist),' OTUs')
+	countread(seqfile,BLASTtsv, otufile,samplelist,otulist) #,dataname)
 main()

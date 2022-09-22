@@ -19,7 +19,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 	print("start BLAST SSU_Euk_pr2_version_4.14.0")
 	outputpath = NGSfile.split('chimeras')[0]
 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
-	ublast_self = vsearch_path + ' --usearch_global '+NGSfile+' --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
+	ublast_self = vsearch_path + ' --threads 64 --usearch_global '+NGSfile+' --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
 	os.system(ublast_self)
 	for blast_record in open(outputpath+'/VsearchBLAST.tsv','r'):
@@ -63,14 +63,14 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 				
 
 		except:
-			print("NO BLAST for ",seq.id)
-			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','a')
-			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
-				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
-				outseq.close()
-				outNOBLAST = open(outputpath+'/VsearchBLAST.tsv','a')
-				outNOBLAST.write(seq.id+"\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\n")
-				outNOBLAST.close()
+			print("NO BLAST for ",seq.id, end='\r', flush = True)
+# 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','a')
+# 			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
+# 				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
+# 				outseq.close()
+# 				outNOBLAST = open(outputpath+'/VsearchBLAST.tsv','a')
+# 				outNOBLAST.write(seq.id+"\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\n")
+# 				outNOBLAST.close()
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa, readcutoff)
