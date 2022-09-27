@@ -94,7 +94,8 @@ def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	outseq = open(NGSfile.split(".fas")[0]+'_reduced.fas','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
-		outseq.write('>'+seq.description+ '\n'+str(seq.seq) + '\n')
+		if int(seq.description.split(";size=")[1]) > int(readcutoff):
+			outseq.write('>'+seq.description+ '\n'+str(seq.seq) + '\n')
 	outseq.close()		
 	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa)
 main()
