@@ -15,27 +15,36 @@ vsearch_path = spawn.find_executable("vsearch")
 SSU_db = "db_v4/pr2_version_4.14.0_SSU_UTAX.fasta" ##change to the correct database
 blastdict = {} 
 
-def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
+def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 	print("start BLAST SSU_Euk_pr2_version_4.14.0")
 	outputpath = NGSfile.split('chimeras')[0]
 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
-	ublast_self = vsearch_path + ' --threads 64 --usearch_global '+NGSfile+' --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
+	ublast_self = vsearch_path + ' --threads 64 --usearch_global '+NGSfile.split(".fas")[0]+'_reduced.fas --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
-#	os.system(ublast_self)
-	###
-	### Replace VsearchBLAST_test.tsv by VsearchBLAST.tsv
-	###
-	for blast_record in open(outputpath+'/VsearchBLAST_test.tsv','r'):
-		if blast_record.split('\t')[0] not in blastdict.values():
-			blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
-		else:
-			if blast_record.split('\t')[2] >  blastdict[blast_record.split('\t')[0]].split('\t')[2]:
+	os.system(ublast_self)
+# 	os.system("head -1000 "+outputpath+"/VsearchBLAST.tsv > "+outputpath+"/VsearchBLAST_test.tsv")
+# 	###
+# 	### Replace VsearchBLAST.tsv by VsearchBLAST_test.tsv for testing
+# 	###
+	for blast_record in open(outputpath+'/VsearchBLAST.tsv','r'):
+		try:
+			print(float(blast_record.split('\t')[2]), " <> ",float(blastdict[blast_record.split('\t')[0]].split('\t')[2]))
+			if float(blast_record.split('\t')[2]) >  float(blastdict[blast_record.split('\t')[0]].split('\t')[2]):
 				blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
-			else:	
+			else:
 				print(blast_record, "duplicated")
+		except:
+			blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
+			print(blast_record," added")
 	outblastc = open(outputpath+'/VsearchBLAST_clean.tsv','w+')
-	for key in blastdict.items():
-		outblastc.write(key + '\t' + blastdict[key]+'\n')
+	outblastsp = open(outputpath+'/VsearchBLAST_sp.tsv','w+')
+#	print(blastdict.items())
+	for key, value in blastdict.items():
+#		print(key)
+#		print(blastdict[key])
+		outblastc.write(blastdict[key]+'\n')
+		if Taxa in blastdict[key]:
+			outblastsp.write(blastdict[key]+'\n')
 	outblastc.close()
 # 	outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','w+')
 # 	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_pr2_4.14.0.fasta','w+')
@@ -83,5 +92,9 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 # # 				outNOBLAST.close()
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
-	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa, readcutoff)
+	outseq = open(NGSfile.split(".fas")[0]+'_reduced.fas','w+')
+	for seq in SeqIO.parse(NGSfile,'fasta'):
+		outseq.write('>'+seq.description+ '\n'+str(seq.seq) + '\n')
+	outseq.close()		
+	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa)
 main()
