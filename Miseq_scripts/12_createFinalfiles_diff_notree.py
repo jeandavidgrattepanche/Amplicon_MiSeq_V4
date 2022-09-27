@@ -23,7 +23,7 @@ def countread(seqfile,BLASTtsv, otufile,samplelist,otulist):
 			break
 	for otu in otulist:
 		for record in open(BLASTtsv,'r'):
-			if otu in record:
+			if otu == record.split('\t')[0]:
 				BLASTresult = record.split('\t')[1].split('tax=')[1]
 				Accession = record.split('\t')[1].split('.')[0]
 				percid = record.split('\t')[2]
