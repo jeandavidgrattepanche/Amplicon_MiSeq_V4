@@ -23,7 +23,7 @@ duplicatelist = []
 def removeoutgroup(outputpath, listsample):
 	os.system('cp '+outputpath+'/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.fasta')
 	os.system('cp '+outputpath+'/OTUs/SWARM_postout.txt '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.txt')
-	os.system('python Miseq_scripts/9_randomly_subsample_ingroup_notree.py '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.fasta '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.txt '+ listsample)
+	os.system('python Miseq_scripts/9_randomly_subsample_ingroup_notree.py '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.fasta '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.txt '+ listsample +' 10')
 	os.system('python Miseq_scripts/11_makeOTUtable_ingroup_v2.py '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.txt '+outputpath+'outgroup_removal/subsampled.txt '+ listsample)
 	os.system('python Miseq_scripts/12_createFinalfiles_diff_notree.py '+outputpath+'outgroup_removal/SWARM_postout_nosingleton_nochimeras_in_only.fasta '+outputpath+'VsearchBLAST_clean.tsv '+outputpath+'OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_in_only_subsampled.txt '+listsample)		
 	
