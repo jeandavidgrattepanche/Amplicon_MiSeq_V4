@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "3.1, September 27, 2022"
+__version__ = "3.11, October 3, 2022"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -18,10 +18,10 @@ blastdict = {}
 def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 	print("start BLAST SSU_Euk_pr2_version_4.14.0")
 	outputpath = NGSfile.split('chimeras')[0]
-	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
+# 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
 	ublast_self = vsearch_path + ' --threads 64 --usearch_global '+NGSfile.split(".fas")[0]+'_reduced.fas --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
-	os.system(ublast_self)
+# 	os.system(ublast_self)
 # 	os.system("head -1000 "+outputpath+"/VsearchBLAST.tsv > "+outputpath+"/VsearchBLAST_test.tsv")
 # 	###
 # 	### Replace VsearchBLAST.tsv by VsearchBLAST_test.tsv for testing
@@ -46,50 +46,18 @@ def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 		if Taxa in blastdict[key]:
 			outblastsp.write(blastdict[key]+'\n')
 	outblastc.close()
-# 	outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','w+')
-# 	outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_pr2_4.14.0.fasta','w+')
-# 	for seq in SeqIO.parse(NGSfile,'fasta'):
-# 		try:
-# 			blastdict[seq.id]
-# 			ident =  blastdict[seq.id].split('\t')[2]
-# 			seqmatch = float(blastdict[seq.id].split('\t')[3]) -float(blastdict[seq.id].split('\t')[5])
-# 			cnt = blastdict[seq.id].split('\t')[3] 
-# 			Sim = round(float(seqmatch-int(blastdict[seq.id].split('\t')[4])) / float(cnt) * 100)
-# 			ID = blastdict[seq.id].split('\t')[1]
-# 			seqused = 1 + int(blastdict[seq.id].split('\t')[7]) - int(blastdict[seq.id].split('\t')[6])
-# 			cov = round(float(seqused) / float(len(seq.seq)) * 100)
-# 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','a')
-# 			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
-# 				outseq.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# 				outseq.close()
 
-# 			if ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
-# 				if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
-# 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
-# 					outseqSAR = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_specTaxa_vsearch_pr2_4.14.0.fasta','a')
-# 					outseqSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# 					outseqSAR.close()
-# # 				else:
-# # 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT low read ", int(seq.description.split('_')[1].replace('r','')))
-# # 					outseqSARl = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch_lread.fasta','a')
-# # 					outseqSARl.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# # 					outseqSARl.close()
-# # 			else:
-# # 				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT not ", Taxa)
-# # 				outseqnSAR = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_SAR_vsearch_notSAR.fasta','a')
-# # 				outseqnSAR.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-# # 				outseqnSAR.close()
-				
+	outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup_vsearch_pr2_4.14.0.fasta','w+')
+	for seq in SeqIO.parse(NGSfile.split(".fas")[0]+'_reduced.fas','fasta'):
+		try:
+			blastdict[seq.id]
 
-# 		except:
-# 			print("NO BLAST for ",seq.id, end='\r', flush = True)
-# # 			outseq = open(outputpath+'taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch_pr2_4.14.0.fasta','a')
-# # 			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
-# # 				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
-# # 				outseq.close()
-# # 				outNOBLAST = open(outputpath+'/VsearchBLAST.tsv','a')
-# # 				outNOBLAST.write(seq.id+"\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\tna\n")
-# # 				outNOBLAST.close()
+			if Taxa in blastdict[seq.id]: #ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
+				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
+				outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup_vsearch_pr2_4.14.0.fasta','a')
+				outseqIN.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
+				outseqIN.close()
+
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	outseq = open(NGSfile.split(".fas")[0]+'_reduced.fas','w+')
