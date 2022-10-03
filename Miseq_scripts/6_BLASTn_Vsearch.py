@@ -23,9 +23,7 @@ def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 	print(ublast_self)
 # 	os.system(ublast_self)
 # 	os.system("head -1000 "+outputpath+"/VsearchBLAST.tsv > "+outputpath+"/VsearchBLAST_test.tsv")
-# 	###
 # 	### Replace VsearchBLAST.tsv by VsearchBLAST_test.tsv for testing
-# 	###
 	for blast_record in open(outputpath+'/VsearchBLAST.tsv','r'):
 		try:
 			print(float(blast_record.split('\t')[2]), " <> ",float(blastdict[blast_record.split('\t')[0]].split('\t')[2]))
@@ -40,30 +38,29 @@ def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 	outblastsp = open(outputpath+'/VsearchBLAST_sp.tsv','w+')
 #	print(blastdict.items())
 	for key, value in blastdict.items():
-#		print(key)
-#		print(blastdict[key])
 		outblastc.write(blastdict[key]+'\n')
 		if Taxa in blastdict[key]:
 			outblastsp.write(blastdict[key]+'\n')
 	outblastc.close()
 
-	outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup_vsearch_pr2_4.14.0.fasta','w+')
-	for seq in SeqIO.parse(NGSfile.split(".fas")[0]+'_reduced.fas','fasta'):
+	outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup.fasta','w+')
+	for seqi in SeqIO.parse(NGSfile.split(".fas")[0]+'_reduced.fas','fasta'):
 		try:
-			blastdict[seq.id]
-
-			if Taxa in blastdict[seq.id]: #ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
-				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
-				outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup_vsearch_pr2_4.14.0.fasta','a')
-				outseqIN.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
+			blastdict[seqi.id]
+			if Taxa in blastdict[seqi.id]: #ID.split('p:')[1].split(',')[0] == str(Taxa):# or ID.split('_')[1] == Taxa (need to check PR@ format):
+				print(seqi.id, 'blasted with', blastdict[seqi.id] )
+				outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup.fasta','a')
+				outseqIN.write('>'+seqi.description+'\n'+str(seqi.seq) + '\n')
 				outseqIN.close()
+		except:
+			print(seqi, " not in ??")
 
 def main():
-	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
+	script, NGSfile, idminy, qcovz, Taxa, readcutoff = argv
 	outseq = open(NGSfile.split(".fas")[0]+'_reduced.fas','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
 		if int(seq.description.split(";size=")[1]) > int(readcutoff):
 			outseq.write('>'+seq.description+ '\n'+str(seq.seq) + '\n')
-	outseq.close()		
+	outseq.close()
 	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa)
 main()
