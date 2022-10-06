@@ -5,9 +5,9 @@
 
 #### TO DO BEFORE RUNNING THE SCRIPT ###
 
-# update first few letter of file (RWS00 in my case) L64 and L96
-# update the number of samples to L61 (range of sample from 5 to 14 [in my case RWS0005 to RWS0014] should be range(5, 15))
-# update L74 and L106, update the values of bbmerge to match the stringency you want. 
+
+
+# update L94 and L120 for length cut-off, update the values of bbmerge (L86) to match the stringency you want. 
  
 __author__ = "Jean-David Grattepanche"
 __version__ = "2, June 29, 2021"

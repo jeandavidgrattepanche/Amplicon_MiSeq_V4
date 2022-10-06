@@ -67,7 +67,7 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 		if not os.path.exists(outputpath + 'taxonomic_assignment/'): 
 			os.makedirs(outputpath + 'taxonomic_assignment/') 
 		print("Run BLAST")
-		os.system('python Miseq_scripts/6_BLASTn_Vsearch.py '+outputpath +'chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
+		os.system('python Miseq_scripts/6_BLASTn_Vsearch.py '+outputpath +'chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta '+ outputpath + '/OTUs/SWARM_postout.txt ' +  str(idmin) + " "+ str(qcov) + ' eukaryota '+str(readcutoff))
 #		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
 	if not os.path.exists(outputpath + 'outgroup_removal/'): 
 		os.makedirs(outputpath + 'outgroup_removal/') 
@@ -108,7 +108,7 @@ def main():
 	if samplefile == "":
 		print ('Your input samplefile is empty.  Try again. ')
 	for samp in open(listsample,'r'):
-		if samp.split('\t')[0] not in listsamp:
+		if samp.split('\t')[0] not in listsamp and samp.split('\t')[0] != "MiSeqcode":
 			listsamp.append(samp.split('\t')[0])
 # 	try:
 # 		dataname = dname
