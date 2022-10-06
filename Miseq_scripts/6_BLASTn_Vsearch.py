@@ -15,7 +15,7 @@ vsearch_path = spawn.find_executable("vsearch")
 SSU_db = "db_v4/pr2_version_4.14.0_SSU_UTAX.fasta" ##change to the correct database
 blastdict = {} 
 
-def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
+def getBLAST( NGSfile, otumap, idmin, qcov, Taxa): #, readcutoff):
 	print("start BLAST SSU_Euk_pr2_version_4.14.0")
 	outputpath = NGSfile.split('chimeras')[0]
 # 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
@@ -35,12 +35,14 @@ def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 			blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
 			print(blast_record," added")
 	outblastc = open(outputpath+'/VsearchBLAST_clean.tsv','w+')
-	outblastsp = open(outputpath+'/VsearchBLAST_sp.tsv','w+')
+	outblastsp = open(outputpath+'/VsearchBLAST_inGroup.tsv','w+')
+	tokeep = []
 #	print(blastdict.items())
 	for key, value in blastdict.items():
 		outblastc.write(blastdict[key]+'\n')
 		if Taxa in blastdict[key]:
 			outblastsp.write(blastdict[key]+'\n')
+			tokeep.append(key)
 	outblastc.close()
 
 	outseqIN = open(outputpath+'taxonomic_assignment/Seq_reads_inGroup.fasta','w+')
@@ -54,13 +56,20 @@ def getBLAST( NGSfile, idmin, qcov, Taxa): #, readcutoff):
 				outseqIN.close()
 		except:
 			print(seqi, " not in ??")
-
+	s=0; t=0
+	outmapIN = open(outputpath+'taxonomic_assignment/Seq_map_inGroup.txt','w+')
+	for line in open(otumap, 'r'):
+		t+=1
+		if line.split('\t')[0] in tokeep:
+			s+=1
+			outmapIN.write(line)
+		print(line.split('\t')[0], round((s/t)*100,1),"%",end='\r')
 def main():
-	script, NGSfile, idminy, qcovz, Taxa, readcutoff = argv
+	script, NGSfile, otumap, idminy, qcovz, Taxa, readcutoff = argv
 	outseq = open(NGSfile.split(".fas")[0]+'_reduced.fas','w+')
 	for seq in SeqIO.parse(NGSfile,'fasta'):
 		if int(seq.description.split(";size=")[1]) > int(readcutoff):
 			outseq.write('>'+seq.description+ '\n'+str(seq.seq) + '\n')
 	outseq.close()
-	getBLAST(NGSfile, float(idminy),float(qcovz), Taxa)
+	getBLAST(NGSfile, otumap, float(idminy),float(qcovz), Taxa)
 main()
