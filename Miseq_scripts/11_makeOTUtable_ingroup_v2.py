@@ -64,6 +64,6 @@ def countread(readmap, readtokeep, samplelist):
 #			output.write(OTUID + readlist + '\n')
 	
 def main():
-	script, otufile, subsamplefile, listofsample = argv 
-	countread(otufile, subsamplefile, listofsample) 
+	script, readmap, subsamplefile, listofsample = argv 
+	countread(readmap, subsamplefile, listofsample) 
 main()
