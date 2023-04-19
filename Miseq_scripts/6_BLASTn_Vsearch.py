@@ -18,10 +18,10 @@ blastdict = {}
 def getBLAST( NGSfile, otumap, idmin, qcov, Taxa): #, readcutoff):
 	print("start BLAST SSU_Euk_pr2_version_4.14.0")
 	outputpath = NGSfile.split('chimeras')[0]
-# 	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
+	outblast = open(outputpath+'/VsearchBLAST.tsv','w+')
 	ublast_self = vsearch_path + ' --threads 64 --usearch_global '+NGSfile.split(".fas")[0]+'_reduced.fas --db '+SSU_db+ ' --strand both --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out '+outputpath+'/VsearchBLAST.tsv ' ## No -evalue 1e-15 as usearch
 	print(ublast_self)
-# 	os.system(ublast_self)
+	os.system(ublast_self)
 # 	os.system("head -1000 "+outputpath+"/VsearchBLAST.tsv > "+outputpath+"/VsearchBLAST_test.tsv")
 # 	### Replace VsearchBLAST.tsv by VsearchBLAST_test.tsv for testing
 	for blast_record in open(outputpath+'/VsearchBLAST.tsv','r'):
