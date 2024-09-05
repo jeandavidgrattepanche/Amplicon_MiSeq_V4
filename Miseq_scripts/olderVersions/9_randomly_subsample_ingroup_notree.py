@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-#if many more OTU than 100,000 this version should be faster
+
 __author__ = "Jean-David Grattepanche"
-__version__ = "5.2, September 8,2022"
+__version__ = "5.01, June 29,2021"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -12,71 +12,40 @@ from Bio import SeqIO
 from sys import argv
 from random import randrange
 
-u=0;samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
+samples = []; tokeep = []; readpersamplesdict= {}; listreaddict= {}
 
-def countread(seqfile, readmap,samplelist, readmax): 	
-	u = 0 ; t=0; tokeep = []
+def countread(seqfile, readmap,samplelist): 	
 	for seq in SeqIO.parse(open(seqfile,'r'),'fasta'):
-		t+=1
-		if int(seq.description.split('_')[1].split('r')[0]) >= int(readmax):
-			tokeep.append(seq.id.split('_')[0])
-			u+=1
-		#the two following lines are for testing only and should be commented otherwise.
-#		if t >= int(100000):
-#			break
-		print(f'{u:,}', " of ", f'{t:,}', end ='\r')
-	print('\n\n\n',len(tokeep),'\n\n\n')
+		tokeep.append(seq.id.split('_')[0])
+
 	outlog = open('readpersample_cleaned.txt','w+')
 	folder = ('/').join(readmap.split('/')[:-1])
-	print("saving folder: ", folder)
+# 	print(folder)
 	maxread = 0
-	samples = []; readpersamplesdict= {}; listreaddict= {}
 	for sample in open(samplelist,'r'):
 		samples.append(sample.replace('_','-').split('\t')[1].split('\n')[0])
 		listreaddict.setdefault(sample.replace('_','-').split('\t')[1].split('\n')[0], [])
-	print(len(listreaddict), " and ", len(samples))
-	l=0; s =0
-	for line in open(readmap,'r'):
-		OTUID = line.split('\t')[0].replace(' ','')
-		l+=1
-		print(OTUID, round((l/t)*100,1),"%",end='\r')
-		if OTUID in str(tokeep):
-# 			print('\n',OTUID)
-			 
-			for read in line.split('\t')[1:]:
-# 				samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
-#				samplename = ('-').join(read.replace(" ","").replace("'","").split('_')[0:3])
-				samplename = read.split('_')[0].replace(" ","")
-# 				print(samplename,end='\t')
-# 				break
-				if samplename in samples:
-					s+=int(read.split("size=")[1])
-					listreaddict[samplename].append(OTUID+";"+read)
-# 					print(s, end='\r')
-				else:
-					print(samplename, ";", str(samples))
-					break
-		else:
-			print(OTUID, ' was removed in previous step?')
-		#the two following lines are for testing only and should be commented otherwise.
-# 		if OTUID == tokeep[-1]:
-# 			break
-	print("Number of reads included = ", f'{s:,}')
+		readnumber= 0 
+		for line in open(readmap,'r'):
+			OTUID = line.split('\t')[0]
+			if OTUID in tokeep:
+				for read in line.split('\t'  )[1:]:
+					samplename = ("-").join(read.replace(" ","").replace("'","").split('_')[:-1])
+		# 				print(samplename)
+					if samplename == sample.replace('_','-').split('\t')[1].split('\n')[0]:
+						readnumber=readnumber + 1
+						listreaddict[sample.replace('_','-').split('\t')[1].split('\n')[0]].append(OTUID+";"+read)
+# 			else:
+# 				print(OTUID, ' was removed in previous step')
 
-
-	readnumber= 0 ; samples = []; tokeep = []
-	for sampler in open(samplelist,'r'):
-		readnumber= len(listreaddict[sampler.replace('_','-').split('\t')[1].split('\n')[0]])
-
-		readpersamplesdict[sampler.replace('_','-').split('\t')[1].split('\n')[0]] = str(readnumber)
-		print(sampler.replace('_','-').split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
+		readpersamplesdict[sample.replace('_','-').split('\t')[1].split('\n')[0]] = str(readnumber)
+		print(sample.replace('_','-').split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
 		if readnumber > maxread:
 			maxread = readnumber
 # 			print(maxread)
 		outlog = open('readpersample_cleaned.txt','a')
-		outlog.write( sampler.replace('_','-').split('\t')[1].split('\n')[0]+ "\t"+ str(readnumber)+'\n')
+		outlog.write( sample.replace('_','-').split('\t')[1].split('\n')[0]+ "\t"+ str(readnumber)+'\n')
 		outlog.close()
-		readnumber= 0
 	outlog.close()	
 
 	subsamp = input('Do you need to subsample? (yes or no) \n')
@@ -131,6 +100,6 @@ def countread(seqfile, readmap,samplelist, readmax):
 		outfile.close()		
 	
 def main():
-	script, seqfile, otufile, listofsample, readmax = argv 
-	countread(seqfile, otufile,listofsample, readmax) 
+	script, seqfile, otufile, listofsample = argv 
+	countread(seqfile, otufile,listofsample) 
 main()

@@ -16,7 +16,7 @@ from random import randrange
 readsk = []; g = 0 ; readtokeepdict={}; OTUlist=[]; OTUtot=0
 def countread(readmap, readtokeep, samplelist): 	
 	folder = ('/').join(readtokeep.split('/')[:-1])
-	folderout = folder.split('/taxonomic')[0] + '/OTUs_ingroup/'
+	folderout = folder.split('/outgroup')[0] + '/OTUs_ingroup/'
 # 	print('test',folderout)
 	
 	if not os.path.exists(folderout):
@@ -34,20 +34,19 @@ def countread(readmap, readtokeep, samplelist):
 	for read in open(readtokeep,'r'):
 #		readsk.append(read.split('\n')[0])
 		g += 1
+		print(g,'reads (',round((g/tot)*100,2),"%) and added =>", len(OTUlist) ,'OTUs (',round((len(OTUlist)/OTUtot)*100,2),"%) ", end = '\r', flush=True)
 		OTUIDs = read.split(';')[0]
 		readname =read.split(';')[1].split('\n')[0]
 		readtokeepdict.setdefault(OTUIDs,[])
 		readtokeepdict[OTUIDs].append(readname)
 		if read.split(';')[0] not in OTUlist:
 			OTUlist.append(read.split(';')[0])
-		print(g,'reads (',round((g/tot)*100,2),"%) and added =>", len(OTUlist) ,'OTUs (',round((len(OTUlist)/OTUtot)*100,2),"%) ", end = '\r', flush=True)
 	print("\n[Done].\n\n")
 	g=0
-	print(output)
 	for OTUID in OTUlist:
 		g +=1
 		output= open(folderout + readmap.split('/')[-1].split('.')[0]+'_subsampled.txt','a')
-		print(OTUID, "has", len(readtokeepdict[OTUID]), 'reads (', round((g/OTUtot)*100,2),"%).", g," added.", end="\r", flush=True)
+		print(OTUID, "has", len(readtokeepdict[OTUID]), 'reads (', round((g/OTUtot)*100,2),"%)", end="\r", flush=True)
 		output.write(OTUID +'\t'+ str(readtokeepdict[OTUID]).replace("'",'').replace('[','').replace(']','').replace(', ','\t') + '\n')
 		output.close()
 
@@ -65,6 +64,6 @@ def countread(readmap, readtokeep, samplelist):
 #			output.write(OTUID + readlist + '\n')
 	
 def main():
-	script, otufile, subsamplefile, listofsample = argv 
-	countread(otufile, subsamplefile, listofsample) 
+	script, readmap, subsamplefile, listofsample = argv 
+	countread(readmap, subsamplefile, listofsample) 
 main()

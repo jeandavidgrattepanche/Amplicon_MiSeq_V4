@@ -23,19 +23,35 @@ def countread(seqfile,BLASTtsv, otufile,samplelist,otulist):
 			break
 	for otu in otulist:
 		for record in open(BLASTtsv,'r'):
-			if otu == record.split('_')[0]:
-				BLASTresult = record.split('\t')[1].split('tax=')[1]
-				Accession = record.split('\t')[1].split('.')[0]
-				percid = record.split('\t')[2]
+			OTUinBLAST=record.split('\t')[1].split('_')[0]
+			if otu == OTUinBLAST:
+				try:
+					BLASTresult = record.split('\t')[0].split(' Bacteria;')[1]
+				except:
+					print(record.split('\t')[0])
+					try:
+						BLASTresult = record.split('\t')[0].split(' Archaea;')[1]
+					except:
+						BLASTresult = record.split('\t')[0].split(' Eukaryota;')[1]
+						print("Eukaryota contamination")
+				Accession = record.split('\t')[2].split('.')[0]
+				percid = record.split('\t')[3]
 				Evalue = "na"
-				BLASTresults = BLASTresult.split(',')[1].split(':')[1]+';'+BLASTresult.split(',')[2].split(':')[1]+';'+BLASTresult.split(',')[3].split(':')[1]+';'+BLASTresult.split(',')[4].split(':')[1]+';'+BLASTresult.split(',')[-1].split(':')[1]+';'+Accession+';'+percid+';'+Evalue
-				BLAST[record.split('_')[0]] = BLASTresults
-				print(record.split('_')[0], "in BLAST", end="\r", flush=True)#'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
+				try:
+					BLASTresults = BLASTresult.split(';')[0]+';'+BLASTresult.split(';')[1]+';'+BLASTresult.split(';')[2]+';'+BLASTresult.split(';')[3]+';'+BLASTresult.split(';')[-1].replace(' ',"_")+';'+Accession+';'+percid+';'+Evalue
+				except:
+					try:
+						BLASTresults = BLASTresult.split(';')[0]+';'+BLASTresult.split(';')[1]+';'+BLASTresult.split(';')[2]+';na;'+BLASTresult.split(';')[-1].replace(' ',"_")+';'+Accession+';'+percid+';'+Evalue
+					except:
+						BLASTresults = BLASTresult.split(';')[0]+';'+BLASTresult.split(';')[1]+';na;na;'+BLASTresult.split(';')[-1].replace(' ',"_")+';'+Accession+';'+percid+';'+Evalue
+				
+				BLAST[OTUinBLAST] = BLASTresults
+				print(OTUinBLAST, "in BLAST\t",BLASTresults)#, '\n to do', len(BLAST), ' of ',len(otulist))#, flush=True,end="\r")
 				break
 		if otu not in BLAST:
 			BLASTresults = "unassigned;na;na;na;na;na;na;na"
 			BLAST[otu] = BLASTresults
-			print(otu, " not in BLAST") #,'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
+#			print(otu, " not in BLAST") #,'\t',BLASTresults, '\n to do', len(BLAST), ' of ',len(otulist), flush=True,end="\r")
 
 # 	for record in open(BLASTtsv,'r'):
 # #		BLASTresults = record.split('\n')[0].split('\t')[-1].replace(' ','-')+';'+record.split('\t')[6]+';'+record.split('\t')[7]+';'+record.split('\t')[8]

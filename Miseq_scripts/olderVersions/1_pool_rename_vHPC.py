@@ -19,10 +19,9 @@ sampledict = {}
 def main():
 	script, seqfile,  Listsample = argv
 	for samplecode in open(Listsample,'r'):
-#		print(samplecode)
 # 		if samplecode.startswith("RWS"): #RWS should match the beginning of your sample or update the line
 		sampledict[samplecode.split('\t')[0]] = samplecode.split('\t')[1].split('\n')[0]
-#		print(samplecode.split('\t')[0], "code", samplecode.split('\t')[1].split('\n')[0])
+#			print(samplecode.split('\t')[0], samplecode.split('\t')[1].split('\n')[0])
 	for seq in SeqIO.parse(open(seqfile,'r'),'fasta'):
 		sampleRSW = seqfile.split('/')[-1].split('_')[0]
 #		print(seqfile, sampleRSW)

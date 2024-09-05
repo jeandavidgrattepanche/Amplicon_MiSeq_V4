@@ -114,12 +114,19 @@ in the parent directory (if in software folder then cd ..)
 $ git clone https://github.com/jeandavidgrattepanche/Amplicon_MiSeq_V4.git
 done
 
-##PR2 for taxonomic assignment
+##PR2 for taxonomic assignment of eukaryotes
 $ cd Amplicon_MiSeq_V4
 $ mkdir db_v4
 $ cd db_v4
 $ wget https://github.com/pr2database/pr2database/releases/download/v4.14.0/pr2_version_4.14.0_SSU_UTAX.fasta.gz
-$ gzip -d pr2_version_4.14.0_SSU_UTAX.fasta.gz
+$ gzip -d pr2_version_5.0.0_SSU_UTAX.fasta.gz
+
+##SILVA for taxonomic assignment of prokaryotes (PR2 can also be used but scripts need to be modified)
+$ cd Amplicon_MiSeq_V4
+$ mkdir db_v4
+$ cd db_v4
+$ wget https://www.arb-silva.de/fileadmin/silva_databases/current/Exports/SILVA_138.2_SSURef_NR99_tax_silva.fasta.gz
+$ gzip -d SILVA_138.2_SSURef_NR99_tax_silva.fasta.gz
 
 
 You are now ready to run the pipeline
