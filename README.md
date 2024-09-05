@@ -1,11 +1,11 @@
 # Amplicon_MiSeq_V4
-updated version of my pipeline using the v4 primers for eukaryotic SSU and running on a HPC linux server.
+updated version of my pipeline using the v4 primers for eukaryotic or prokaryotic SSU and running on a HPC linux server.
 
 
 # Amplicon_MiSeq_pipeline
-This repository contains scripts and use PR2 database to analyse MiSeq data for Amplicon generate with eukaryotic V4 SSU primers.
+This repository contains scripts and use PR2 or ARB SILVA databases to analyse MiSeq data for Amplicon generate with eukaryotic or prokaryotic V4 SSU primers.
 
-# Pipeline Guide for eukV4SSU
+# Pipeline Guide
 
 A whole pipeline (scripts and folders structure) for MiSeq analysis.
 
@@ -63,16 +63,14 @@ Note: if you have degenerated bases, you should add the various combination as t
 **IMPORTANT: the name of the primer must be as following: text_r or text_f. r and f for reverse and forward and text should not contain any underscores.**
 
 
-More descriptions are available in Guide_MiSeqPipeline_2018.txt (not up to date yet).
+More descriptions are available in Guide_MiSeqPipeline_2018.txt (not uptodated anymore).
 
-An undergraduate proofread guide can be shared on request.
-
-# Run on Temple server
+# Run on Temple HPC server
 Check the ToInstall.txt which describes the softwares required by the pipeline and the best way to install them on a linux server.
 
 To run the pipeline on Compute:
 ```
-$ cd Amplicon_MiSeq_V4/
+$ cd Amplicon/
 $ module load java
 ```
 then
