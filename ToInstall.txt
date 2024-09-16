@@ -55,33 +55,6 @@ vsearch v2.21.1_linux_x86_64
 ```
 done
 
-## MAFFT
-$ cd software 
-$ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.tgz
-$ tar xfvz mafft-7.490-with-extensions-src.tgz
-$ cd mafft-7.490-with-extensions/core
-$ vi Makefile
-edit to line to PREFIX = /home/tuxxxx/software/mafft/
-press esc and type :wq
-
-$ make clean
-$ make
-$ make install
-$ cp /bin/mafft ../../bin/
-$ mafft --version
-```
-v7.490 (2021/Oct/30)
-```
-done
-
-## RAxML
-$ cd software
-$ git clone https://github.com/stamatak/standard-RAxML.git
-$ cd standard-RAxML/
-$ make -f Makefile.AVX2.PTHREADS.gcc
-$ cp raxmlHPC-PTHREADS-AVX2 ../../bin/
-done
-
 ## EMBOSS 
 $ cd software
 $ wget ftp://emboss.open-bio.org/pub/EMBOSS/emboss-latest.tar.gz
@@ -93,7 +66,34 @@ $ make -j 4
 $ make install
 done
 
-##SRA toolkit (can be useful for downloading SRA data)
+##** MAFFT (only if phylogenic assignment)
+$ cd software 
+$ wget https://mafft.cbrc.jp/alignment/software/mafft-7.490-with-extensions-src.tgz
+$ tar xfvz mafft-7.490-with-extensions-src.tgz
+$ cd mafft-7.490-with-extensions/core
+$ vi Makefile
+edit to line to PREFIX = /home/tuxxxx/software/mafft/
+press esc and type :wq
+$ make clean
+$ make
+$ make install
+$ cp /bin/mafft ../../bin/
+$ mafft --version
+```
+v7.490 (2021/Oct/30)
+```
+done
+
+##** RAxML (only if phylogenic assignment)
+$ cd software
+$ git clone https://github.com/stamatak/standard-RAxML.git
+$ cd standard-RAxML/
+$ make -f Makefile.AVX2.PTHREADS.gcc
+$ cp raxmlHPC-PTHREADS-AVX2 ../../bin/
+done
+
+
+##**SRA toolkit (can be useful for downloading SRA data)
 $ cd software
 $ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-centos_linux64.tar.gz
 $ tar xzvf sratoolkit.current-centos_linux64.tar.gz
