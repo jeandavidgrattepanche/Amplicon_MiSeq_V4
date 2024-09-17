@@ -1,0 +1,63 @@
+###########################################################
+Pipeline Guide
+
+Prepare your data and folders:
+0- keep the same folders and files structure from the repository or the script will crash
+1- Create a folder named Rawdata with all your MiSeq sequence files (e.g. LAKM1_To.1.2_S1_L001_R1.fastq.gz, LAKM1_To.1.2_S1_L001_R2.fastq.gz)
+	You can use the script movefile.py to create this folder
+2- Create a file with your sample code and sample name (a file named List_samples.txt containing: LKM# (tab) samplename ) \n '
+	You can use excel to create this file and save as a Tab Delimited Text (.txt) file
+	So far, the List_samples.txt file includes all the samples. Delete the samples you are not interested in.
+3- Copy the script folder, SAR_db folder and the 3 scripts named MiSeq_pipeline_SAR_SWARM_part(1,2 and 3).py from this Google Drive folder and add all in the folder where you save the samplelist.txt and the rawdata folder (MiSeq_folder).
+4- Open the script 6 (in Miseq_scripts folder, named 6_BLASTn_V2.py).
+	Replace the XXX by the email address you are using for your NCBI account => Entrez.email = "XXX@smith.edu"
+	If you don't an NCBI account, you should create one by going to this ncbi webpage (https://www.ncbi.nlm.nih.gov/account/register/?back_url=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fbioproject&partners-uri=cms:/account/partners)
+	__Update__: the new version use Vsearch, so you do not need to do this step of NCBI account.
+
+Running the pipeline:
+	In terminal:
+		$ cd Amplicon_MiSeq_pipeline
+		for step 1:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py List_sample.txt
+		for step 2:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py List_sample.txt
+		for step 3:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
+		
+	=> dataname (e.g. M00763) it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA.
+	=> RAxML_labelledTree_masked_<project>.tre is the tree run at the end of step 2. You hsould has also a tree with only the outgroup named RAxML_labelledTree_masked_<project>_outgroup.tre
+				
+
+What is happening in each script:
+1- The script MiSeq_pipeline_SAR_SWARM_part1.py will:
+	a- merge your forward and reverse reads using PEAR (Paired-End Read merger) and convert the fastq files in fasta files. (PEAR folder) **=> update PEAR parameters if you use another primer set**
+	b- create a file name readpersample.txt. This file contains the name of your sample and the number of reads after PEAR. (ConvertPEAR folder)
+2- The script MiSeq_pipeline_SAR_SWARM_part2.py will:
+	a- Pick OTUs with SWARM (in OTUs folder, you will find a SWARM_postout.fas files. It's the sequences of your SWARM OTUs)
+	b- Create an OTU table i.e. a table with the proportion of each SWARM OTU for each sample. (in OTUs folder, OTUtable.txt file. You can open the file in excel and have fun analyzing your data).
+	c- Remove chimera using Uchime3_denovo implemented in Vsearch
+	d- Remove OTUs too dissimilar to the most abundant OTU using Water implemented in EMBOSS
+	e- BLAST SWARM OTU against SAR database (or you homemade db). (in the folder Taxonomic_assignment, you will find two file: "Blast_result_renamed.txt" with the BLAST results and the classification and "no_BLAST_result.txt" containing all SWARM OTUs without BLAST results for the cutoff you used)
+	f- Create an alignment of your OTU and SAR reference from SAR_db folder (or your homemade db) and remove column with more than 75% empty characters.
+	(you will also find a temp folder. This folder is for troubleshooting. If you have not issue you can delete it.)
+3- You have to built the tree for the next step:
+	a- You can built the tree locally on your computer using the commandline: raxmlHPC-PTHREADS-AVX2 -f v -s OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -m GTRGAMMAI -t SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -n <name of the output> -T -1
+	b- This tree can also be run through CIPRES REST API (CRA) with this commandline: 
+	$ export URL=https://cipresrest.sdsc.edu/cipresrest/v1
+	$ export CRA_USER = your username on CIPRES
+	$ export PASSWORD = you password on CIPRES
+	$ export KEY= you key generater on CIPRES
+	see https://www.phylo.org/restusers/documentation.action for more informations
+	$ curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER -F tool=RAXMLHPC8_REST_XSEDE -F vparam.select_analysis_=fv -F input.infile_=@./outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -F vparam.runtime_=168 -F vparam.dna_gtrcat_=GTRGAMMA -F vparam.invariable_=I -F input.treetop_=@./SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -F metadata.statusEmail=true
+		A script is availabe to build your tree on CIPRES REST API (see SSU_Database_Builing, turn off line 26 and 27, and turn on line 29,30, and 31. Do not forget to add your reference tree (/SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre for SAR primers)
+	(i) OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas is the alignment create at the end of the script 2
+	(ii) SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre is a reference tree from the SAR_db folder (or homemade tree).
+4- Using Figtree, copy and paste the outgroup clade in a new tree.
+	This step will help removing the outgroup OTUs from your dataset
+5- The script MiSeq_pipeline_SAR_SWARM_part3.py will:
+	a- Remove outgroup OTUs based on the tree
+	b- Rarefy your samples to be able to compare them (this step take a while)
+	c- Assign taxonomy by tree
+	d- Built the final OTU table (OTUtable_ingroup.txt), which contains the Taxonomic assignment by BLAST (Btaxo…) and by Tree (Ttaxo), the number of read and occurrence of each OTU and the distribution in your samples.
+
+Now you have your final files, you can explore your data. HAVE FUN !!
