@@ -186,8 +186,8 @@ def main():
 		main()
 
 	issuelist= []; filein=[]
-	filnum = 1 # heading in listsample
-#	filnum = 0 # if rerun without 1_readpool
+#	filnum = 1 # heading in listsample
+	filnum = 0 # if rerun without 1_readpool
 	for file in os.listdir(Qlenpath):
 		if file == "readpooled.fas":
 			os.system("rm "+Qlenpath+"/"+file)
