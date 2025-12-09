@@ -21,8 +21,8 @@ $ conda install -c conda-forge biopython
 
 ##BBmap
 $ cd software
-$ wget https://sourceforge.net/projects/bbmap/files/BBMap_38.96.tar.gz
-$ tar xzf BBMap_38.96.tar.gz
+$ wget https://sourceforge.net/projects/bbmap/files/BBMap_39.26.tar.gz
+$ tar xzf BBMap_39.26.tar.gz
 create the working folder bbmap. done
 
 ## install SWARM
